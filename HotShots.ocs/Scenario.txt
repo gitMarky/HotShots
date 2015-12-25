@@ -1,0 +1,9 @@
+[Head]
+Title=HotShots
+Version=6,0
+
+[Definitions]
+Definition1=Objects.ocd
+
+[Landscape]
+Sky=Clouds1
