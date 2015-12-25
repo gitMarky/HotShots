@@ -4,6 +4,7 @@ Version=6,0
 
 [Definitions]
 Definition1=Objects.ocd
+Definition2=LibraryArenaGames.ocd
 
 [Landscape]
 Sky=Clouds1
