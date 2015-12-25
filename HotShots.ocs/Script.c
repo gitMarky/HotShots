@@ -9,7 +9,7 @@
 protected func Initialize()
 {
 	// goal
-	CreateObject(Goal_DeathMatch);
+	CreateObject(Goal_Elimination);
 	CreateObject(Rule_KillLogs);
 	CreateObject(Rule_Gravestones);
 	
@@ -23,6 +23,11 @@ protected func Initialize()
 	// smooth brick edges
 	PlaceEdges();
 	PlaceGras();
+	
+	// configuration
+	CreateObject(Environment_RoundManager);
+	CreateObject(Environment_Configuration);
+
 	return;
 }
 
