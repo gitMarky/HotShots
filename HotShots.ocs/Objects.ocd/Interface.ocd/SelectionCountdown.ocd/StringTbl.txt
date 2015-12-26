@@ -1,0 +1,3 @@
+Name=Countdown
+
+Countdown=Ready?||%d||(You can choose a crew member now)
