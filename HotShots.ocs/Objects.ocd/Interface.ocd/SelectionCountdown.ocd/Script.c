@@ -20,6 +20,19 @@ public func DisplayMessage(int player, int counter)
 public func OnCountdownStarted()
 {
 	TurnManager()->RegisterTurnEndBlocker(this);
+	EnableCrew();
+}
+
+func EnableCrew()
+{	
+	var player = TurnManager()->GetActivePlayer();
+	for (var i = 0; i < GetCrewCount(player); i++)
+	{
+		var crew = GetCrew(player, i);
+		
+		// disable non-cursor crew
+		crew->SetCrewEnabled(true);
+	}
 }
 
 /**
