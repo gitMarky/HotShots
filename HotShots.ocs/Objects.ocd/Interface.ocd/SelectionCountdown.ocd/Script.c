@@ -7,7 +7,7 @@
 
 public func Initialize()
 {
-	TurnManager()->RegisterTurnStartBlocker(this);
+	TurnManager()->RegisterTurnEndBlocker(this);
 	StartCountdown(10);
 }
 
@@ -15,7 +15,7 @@ public func DisplayMessage(int player, int counter)
 {
 	if (counter)
 	{
-		CustomMessage(Format("$Countdown$", counter), nil, player);
+		CustomMessage(Format("$Countdown$", GetPlayerName(player), counter), nil, player);
 	}
 	else
 	{
@@ -28,5 +28,20 @@ public func DisplayMessage(int player, int counter)
  */
 func OnCountdownEnded()
 {
-	TurnManager()->RemoveTurnStartBlocker(this);
+	CreateObject(Turn_ActionCountdown);
+	TurnManager()->RemoveTurnEndBlocker(this);
+}
+
+
+
+/**
+ Use this to access the selection countdown object from other objects.
+ @return object A {@link Turn_SelectionCountdown#index selection countdown} object,
+         or {@c nil} if it does not exist.
+ */
+global func TurnSelectionCountdown()
+{
+	var manager = FindObject(Find_ID(Turn_SelectionCountdown));
+	
+	return manager;
 }
