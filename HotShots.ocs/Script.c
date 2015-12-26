@@ -12,6 +12,7 @@ protected func Initialize()
 	// configuration
 	CreateObject(Environment_RoundManager);
 	CreateObject(Environment_Configuration);
+	CreateObject(Environment_TurnManager);
 
 	// goal
 	CreateObject(Goal_Elimination);
