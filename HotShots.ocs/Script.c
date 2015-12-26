@@ -8,6 +8,11 @@
 
 protected func Initialize()
 {
+
+	// configuration
+	CreateObject(Environment_RoundManager);
+	CreateObject(Environment_Configuration);
+
 	// goal
 	CreateObject(Goal_Elimination);
 	CreateObject(Rule_KillLogs);
@@ -24,10 +29,6 @@ protected func Initialize()
 	PlaceEdges();
 	PlaceGras();
 	
-	// configuration
-	CreateObject(Environment_RoundManager);
-	CreateObject(Environment_Configuration);
-
 	return;
 }
 

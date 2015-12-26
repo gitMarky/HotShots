@@ -8,6 +8,12 @@
 
 #include Goal_Melee
 
+func Initialize()
+{
+	RoundManager()->RegisterRoundEndBlocker(this);
+	_inherited(...);
+}
+
 func MakeHostileToAll(int newplr, int team)
 {
 	// If the player is in a team, don't change hostility.
