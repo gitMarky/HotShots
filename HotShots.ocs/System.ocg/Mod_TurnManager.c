@@ -45,8 +45,7 @@ func OnTurnStart(int turn_number)
 
 	Log("TurnManager: OnTurnStart");
 
-	// create selection countdown
-	CreateObject(Turn_SelectionCountdown);
+	TurnSelectionCountdown()->StartCountdown();
 }
 
 

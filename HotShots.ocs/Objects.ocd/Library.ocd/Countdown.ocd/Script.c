@@ -5,8 +5,11 @@
  */
 func StartCountdown(int seconds)
 {
+	if (!seconds) seconds = DefaultCountdown();
+
 	var effect = AddEffect("IntCountdown", this, 1, 36, this);
 	SetCountdown(effect, seconds);
+	OnCountdownStarted();
 }
 
 /**
@@ -36,6 +39,13 @@ func DisplayMessage(int player, int counter)
 	{
 		CustomMessage("", nil, player);
 	}
+}
+
+/**
+ Callback that happens when the countdown starts.
+ */
+func OnCountdownStarted()
+{
 }
 
 /**
@@ -71,4 +81,11 @@ private func FxIntCountdownStop(object target, proplist effect, int reason, bool
 	if (temporary) return;
 
 	OnCountdownEnded();
+}
+
+func DefaultCountdown(){ return 0;}
+
+func IsActive()
+{
+	return GetEffect("IntCountdown", this);
 }
