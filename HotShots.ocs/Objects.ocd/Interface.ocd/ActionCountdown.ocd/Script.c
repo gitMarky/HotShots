@@ -47,6 +47,7 @@ func EnableCursorOnly()
 func OnCountdownEnded()
 {
 	FinishActions();
+	if (!TurnFinishCountdown()->IsActive()) TurnFinishCountdown()->StartCountdown();
 }
 
 
