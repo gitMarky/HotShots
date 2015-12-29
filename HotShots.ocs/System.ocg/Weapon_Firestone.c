@@ -108,13 +108,15 @@ public func FinishedAiming(object clonk, int angle)
 {
 	if (!GetChargeGui()) return;
 
+	// actions on the projectile
 	Launch(clonk, angle, ChargeGuiGetChargePercent());
 
-	// Open the hand to let the string go and play the fire animation
-	PlayAnimation("Fire", 6, Anim_Linear(0, 0, GetAnimationLength("Fire"), animation_set["ShootTime"], ANIM_Hold), Anim_Const(1000));
-	//clonk->PlayAnimation("Close1Hand", 11, Anim_Const(0), Anim_Const(1000));
+	// actions on the clonk
 	clonk->StartShoot(this);
 	Reset(clonk);
+	
+	// notify round management
+	TurnActionCountdown()->FinishActions();
 	return true;
 }
 
@@ -143,7 +145,6 @@ public func Launch(object shooter, int angle, int str)
 	SetYDir(ydir);
 	SetR(angle);
 	SetRDir(BoundBy(xdir, -1, 1) * str / 10);
-	Sound("ArrowShoot?");
 
 	// Shooter controls the projectile for correct kill tracing.
 	SetController(shooter->GetController());
@@ -159,8 +160,14 @@ public func HitObject(object obj)
 	{
 		obj->~OnProjectileHit(this);
 	}
-	
+		
 	return Hit2();
+}
+
+public func Hit2()
+{
+	TurnFinishCountdown()->StartCountdown();
+	_inherited(...);
 }
 
 
