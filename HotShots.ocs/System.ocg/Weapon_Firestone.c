@@ -89,6 +89,7 @@ public func ControlUseHolding(object clonk, int x, int y)
 	if (GetChargeGui())
 	{
 		ChargeGuiDoCharge(1);
+		// TODO: add graphics interface
 		clonk->Message("Charge %d%", ChargeGuiGetChargePercent());
 	}
 
