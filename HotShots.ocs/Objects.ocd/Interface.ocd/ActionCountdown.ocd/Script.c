@@ -45,8 +45,20 @@ func EnableCursorOnly()
  */
 func OnCountdownEnded()
 {
+	FinishActions();
+}
+
+func FinishActions()
+{
+	TurnFinishCountdown()->BlockTurnEnd();
 	TurnManager()->RemoveTurnEndBlocker(this);
-	
+	DisableInventory();
+	DisableCrew();
+	Abort();
+}	
+
+func DisableInventory()
+{
 	// remove all inventory items, so that nothing is left in the next turn
 	var crew = TurnManager()->GetActiveCrew();
 	if (crew)
@@ -59,6 +71,11 @@ func OnCountdownEnded()
 	}
 }
 
+func DisableCrew()
+{
+	var crew = TurnManager()->GetActiveCrew();
+	if (crew) crew->SetCrewEnabled(false);
+}
 
 /**
  Use this to access the action countdown object from other objects.
