@@ -9,10 +9,10 @@
 
 #include Goal_Melee
 
-
 func Initialize()
 {
 	RoundManager()->RegisterRoundEndBlocker(this);
+	
 	_inherited(...);
 }
 
@@ -72,5 +72,16 @@ public func IsFulfilled()
 	// No enemy players, goal fulfilled.
 	return false; // was: true;
 }
+
+global func Goal()
+{
+	return FindObject(Find_ID(Goal_Elimination));
+}
+
+func UpdateDamageDisplay()
+{
+	NotifyHUD();
+}
+
 
 local Name = "$Name$";
