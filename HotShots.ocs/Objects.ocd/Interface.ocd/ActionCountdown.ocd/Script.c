@@ -23,6 +23,7 @@ public func OnCountdownStarted()
 {
 	TurnManager()->RegisterTurnEndBlocker(this);
 	EnableCursorOnly();
+	EnableInventory();
 }
 
 
@@ -56,7 +57,14 @@ func FinishActions()
 	DisableInventory();
 	DisableCrew();
 	Abort();
-}	
+}
+
+
+func EnableInventory()
+{
+	var crew = TurnManager()->GetActiveCrew();
+	if (crew) crew->CreateContents(Firestone);
+}
 
 
 func DisableInventory()
