@@ -32,6 +32,7 @@ func EnableCrew()
 		
 		// disable non-cursor crew
 		crew->SetCrewEnabled(true);
+		crew->CreateContents(Firestone);
 	}
 }
 

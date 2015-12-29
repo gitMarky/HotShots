@@ -15,7 +15,7 @@ public func GetActivePlayer()
 {
 	if (active_player_index >= GetPlayerCount())
 	{
-		FatalError("Called when active player is %d, but only %d is allowed.", active_player_index, GetPlayerCount() - 1);
+		FatalError(Format("Called when active player is %d, but only %d is allowed.", active_player_index, GetPlayerCount() - 1));
 	}
 
 	return GetPlayerByIndex(active_player_index);
