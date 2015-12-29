@@ -10,7 +10,6 @@
 func DisplayMessage(int player, int counter)
 {
 	// override: do nothing
-	Log("Finish countdown: %d", counter);
 }
 
 

@@ -40,8 +40,6 @@ func OnTurnReset(int turn_number)
 {
 	_inherited(turn_number);
 
-	Log("TurnManager: OnTurnReset");
-
 	// cycle the active player when the round is reset
 	active_player_index++;
 	
@@ -55,16 +53,12 @@ func OnTurnStart(int turn_number)
 {
 	_inherited(turn_number);
 
-	Log("TurnManager: OnTurnStart");
-
 	TurnSelectionCountdown()->StartCountdown();
 }
 
 
 func OnRoundReset(int round_number)
 {
-	Log("TurnManager: OnRoundReset");
-
 	RegisterTurnStartBlocker(RoundManager());
 }
 
@@ -74,8 +68,6 @@ func OnRoundReset(int round_number)
  */
 func OnRoundStart(int round_number)
 {
-	Log("TurnManager: OnRoundStart");
-
 	RemoveTurnStartBlocker(RoundManager());
 }
  
