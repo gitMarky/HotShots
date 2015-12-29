@@ -1,5 +1,6 @@
 #appendto Clonk
 
+
 func Damage(int change, int cause, int by_player)
 {
 	TurnFinishCountdown()->ProlongCountdown();

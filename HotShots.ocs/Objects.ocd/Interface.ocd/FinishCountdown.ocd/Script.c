@@ -6,20 +6,24 @@
 
 #include Library_Countdown
 
+
 func DisplayMessage(int player, int counter)
 {
 	// override: do nothing
 	Log("Finish countdown: %d", counter);
 }
 
+
 public func BlockTurnEnd()
 {
 	TurnManager()->RegisterTurnEndBlocker(this);
 }
 
+
 public func OnCountdownStarted()
 {
 }
+
 
 /**
  Callback that happens when the countdown ends.
@@ -42,7 +46,9 @@ global func TurnFinishCountdown()
 	return manager;
 }
 
+
 func DefaultCountdown(){ return 3;}
+
 
 func ProlongCountdown()
 {

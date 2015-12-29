@@ -6,13 +6,16 @@
  @author Marky
  */
 
+
 #include Goal_Melee
+
 
 func Initialize()
 {
 	RoundManager()->RegisterRoundEndBlocker(this);
 	_inherited(...);
 }
+
 
 func MakeHostileToAll(int newplr, int team)
 {
@@ -30,11 +33,13 @@ func MakeHostileToAll(int newplr, int team)
 	}
 }
 
+
 protected func InitializePlayer(int newplr, int x, int y, object base, int team)
 {
 	MakeHostileToAll(newplr, team);
 	return inherited(newplr, x, y, base, team, ...);
 }
+
 
 private func CheckTeamHostile(int plr1, int plr2)
 {
@@ -45,6 +50,7 @@ private func CheckTeamHostile(int plr1, int plr2)
 		return false;
 	return Hostile(plr1, plr2);
 }
+
 
 public func IsFulfilled()
 {

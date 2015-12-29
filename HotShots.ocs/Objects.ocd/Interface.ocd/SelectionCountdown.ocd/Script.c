@@ -5,6 +5,7 @@
 
 #include Library_Countdown
 
+
 public func DisplayMessage(int player, int counter)
 {
 	if (counter)
@@ -17,11 +18,13 @@ public func DisplayMessage(int player, int counter)
 	}
 }
 
+
 public func OnCountdownStarted()
 {
 	TurnManager()->RegisterTurnEndBlocker(this);
 	EnableCrew();
 }
+
 
 func EnableCrew()
 {	
@@ -36,6 +39,7 @@ func EnableCrew()
 	}
 }
 
+
 /**
  Callback that happens when the countdown ends.
  */
@@ -44,7 +48,6 @@ func OnCountdownEnded()
 	TurnActionCountdown()->StartCountdown();
 	TurnManager()->RemoveTurnEndBlocker(this);
 }
-
 
 
 /**
@@ -58,5 +61,6 @@ global func TurnSelectionCountdown()
 	
 	return manager;
 }
+
 
 func DefaultCountdown(){ return 10;}

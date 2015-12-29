@@ -48,6 +48,7 @@ func OnCountdownEnded()
 	FinishActions();
 }
 
+
 func FinishActions()
 {
 	TurnFinishCountdown()->BlockTurnEnd();
@@ -56,6 +57,7 @@ func FinishActions()
 	DisableCrew();
 	Abort();
 }	
+
 
 func DisableInventory()
 {
@@ -71,11 +73,13 @@ func DisableInventory()
 	}
 }
 
+
 func DisableCrew()
 {
 	var crew = TurnManager()->GetActiveCrew();
 	if (crew) crew->SetCrewEnabled(false);
 }
+
 
 /**
  Use this to access the action countdown object from other objects.

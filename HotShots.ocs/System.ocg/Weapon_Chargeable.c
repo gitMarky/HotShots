@@ -2,9 +2,11 @@
  Effects for weapon charging.
  @author Marky
  */
- 
+
+
 static const FX_ChargeGUI = "IntChargeGui";
  
+
 global func AddChargeGui()
 {
 	if (!this)
@@ -25,6 +27,7 @@ global func AddChargeGui()
 	return effect;
 }
 
+
 global func GetChargeGui()
 {
 	if (!this)
@@ -34,6 +37,7 @@ global func GetChargeGui()
 
 	return GetEffect(FX_ChargeGUI, this);
 }
+
 
 global func RemoveChargeGui()
 {
@@ -50,6 +54,7 @@ global func RemoveChargeGui()
 	}
 }
 
+
 global func ChargeGuiSetMaxCharge(int amount)
 {
 	var effect = GetChargeGui();
@@ -60,6 +65,7 @@ global func ChargeGuiSetMaxCharge(int amount)
 	
 	effect.max_charge = amount;
 }
+
 
 global func ChargeGuiDoCharge(int amount)
 {
@@ -90,6 +96,7 @@ global func ChargeGuiGetCharge()
 
 	return effect.charge;
 }
+
 
 global func ChargeGuiGetChargePercent()
 {

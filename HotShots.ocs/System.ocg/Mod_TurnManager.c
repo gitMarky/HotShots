@@ -4,6 +4,7 @@
 
 #appendto Environment_TurnManager
 
+
 local active_player_index; // this player is currently playing
 
 
@@ -66,6 +67,7 @@ func OnRoundReset(int round_number)
 
 	RegisterTurnStartBlocker(RoundManager());
 }
+
 
 /**
  Callback from the round object, when the round starts.

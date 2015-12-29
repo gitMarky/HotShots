@@ -12,6 +12,7 @@ func StartCountdown(int seconds)
 	OnCountdownStarted();
 }
 
+
 /**
  Sets the countdown for this object.
  @par effect the countdown effect
@@ -22,6 +23,7 @@ func SetCountdown(proplist effect, int value)
 	effect.counter = value;
 	effect.counter_set = true;
 }
+
 
 /**
  Override this. By default this displays a red
@@ -41,6 +43,7 @@ func DisplayMessage(int player, int counter)
 	}
 }
 
+
 /**
  Callback that happens when the countdown starts.
  */
@@ -48,12 +51,14 @@ func OnCountdownStarted()
 {
 }
 
+
 /**
  Callback that happens when the countdown ends.
  */
 func OnCountdownEnded()
 {
 }
+
 
 public func FxIntCountdownTimer(object target, proplist effect, int time)
 {
@@ -76,6 +81,7 @@ public func FxIntCountdownTimer(object target, proplist effect, int time)
 	return FX_OK;
 }
 
+
 private func FxIntCountdownStop(object target, proplist effect, int reason, bool temporary)
 {
 	if (temporary) return;
@@ -83,7 +89,9 @@ private func FxIntCountdownStop(object target, proplist effect, int reason, bool
 	OnCountdownEnded();
 }
 
+
 func DefaultCountdown(){ return 0;}
+
 
 func IsActive()
 {
