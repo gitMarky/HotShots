@@ -67,8 +67,10 @@ public func FinishedLoading(object clonk)
 {
 	clonk->~StartAim(this);
 
+	// charge 20% default
 	AddChargeGui();
 	ChargeGuiSetMaxCharge(200);
+	ChargeGuiDoCharge(40);
 	return true;
 }
 
