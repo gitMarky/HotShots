@@ -21,6 +21,17 @@ public func GetActivePlayer()
 	return GetPlayerByIndex(active_player_index);
 }
 
+
+/**
+ Tells which crew member is currently active.
+ @return the crew member object.
+ */
+public func GetActiveCrew()
+{
+	return GetCursor(GetActivePlayer());
+}
+
+
 /**
  Callback from this object, when the turn is reset and before a new turn starts.
  */
