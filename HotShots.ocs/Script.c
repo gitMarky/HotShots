@@ -14,6 +14,7 @@ protected func Initialize()
 	CreateObject(Environment_Configuration);
 	CreateObject(Turn_SelectionCountdown);
 	CreateObject(Turn_ActionCountdown);
+	CreateObject(Turn_FinishCountdown);
 	CreateObject(Environment_TurnManager);
 
 	// goal
