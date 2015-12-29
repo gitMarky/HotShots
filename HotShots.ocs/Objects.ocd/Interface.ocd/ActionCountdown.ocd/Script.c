@@ -46,6 +46,17 @@ func EnableCursorOnly()
 func OnCountdownEnded()
 {
 	TurnManager()->RemoveTurnEndBlocker(this);
+	
+	// remove all inventory items, so that nothing is left in the next turn
+	var crew = TurnManager()->GetActiveCrew();
+	if (crew)
+	{
+		for (var item in FindObjects(Find_Container(crew)))
+		{
+			// TODO: possibly add the item to team resources again
+			if (item) item->RemoveObject();
+		}
+	}
 }
 
 
