@@ -89,3 +89,17 @@ func IsActive()
 {
 	return GetEffect("IntCountdown", this);
 }
+
+
+/**
+ Aborts the countdown. This causes the same callbacks
+ as if the countdown had ended normally.
+ */
+func Abort()
+{
+	var effect = IsActive();
+	if (effect)
+	{
+		SetCountdown(effect, 0);
+	}
+}
