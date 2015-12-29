@@ -10,7 +10,8 @@ public func DisplayMessage(int player, int counter)
 {
 	if (counter)
 	{
-		CustomMessage(Format("$Countdown$", GetPlayerName(player), counter), nil, player);
+		var active_player = TurnManager()->GetActivePlayer();
+		CustomMessage(Format("$Countdown$", GetPlayerName(active_player), counter), nil, player);
 	}
 	else
 	{
