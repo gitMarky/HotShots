@@ -18,6 +18,7 @@ local player_health_cur = [];
 func Initialize()
 {
 	RoundManager()->RegisterRoundEndBlocker(this);
+	TurnManager()->RegisterTurnStartBlocker(this);
 	
 	_inherited(...);
 }
@@ -66,26 +67,8 @@ private func CheckTeamHostile(int plr1, int plr2)
 
 public func IsFulfilled()
 {
-	// If Teams.txt-Teams still need to be chosen, the goal cannot be fulfilled.
-	if (GetPlayerTeam(GetPlayerByIndex()) == -1) return;
-
-	// If the round is not active the goal cannot be fulfilled.
-	if (!RoundManager()->IsRoundActive()) return false;
-
-	for (var i = 0; i < GetPlayerCount(); i++)
-	{
-		var plr = GetPlayerByIndex(i);
-		// Compare with other players.
-		for (var j = i + 1; j < GetPlayerCount(); j++)
-		{
-			var plr2cmp = GetPlayerByIndex(j);
-			// Still enemy players out there?
-			if (CheckTeamHostile(plr, plr2cmp) ) return false;
-		}
-	}
-
-	// No enemy players, goal fulfilled.
-	return true;
+	// never fulfillable - we have a custom evaluation
+	return false;
 }
 
 
@@ -112,25 +95,54 @@ global func Goal()
 
 func OnRoundStart(int round)
 {
+	Log("Round Start");
+
 	CreatePlayerCrews();
 	DeterminePlayerHealthMax();
 	GuiPlayerHealthDisplay()->Display();
+	
+	TurnManager()->RemoveTurnStartBlocker(this);
 }
 
 func OnRoundEnd(int round)
 {
+	Log("Round End");
+
 	GuiPlayerHealthDisplay()->Hide();
 	RemovePlayerCrews();
+	EnableSavedCrews();
 }
 
 func OnRoundReset(int round)
 {
+	Log("Round Reset");
+
 	player_health_max = [];
 	player_health_cur = [];
 	
 	RoundManager()->RegisterRoundEndBlocker(this);
 
 	_inherited(round);
+}
+
+func OnTurnEnd(int turn)
+{
+	// check for fulfilment
+	for (var i = 0; i < GetPlayerCount(); i++)
+	{
+		var plr = GetPlayerByIndex(i);
+		// Compare with other players.
+		for (var j = i + 1; j < GetPlayerCount(); j++)
+		{
+			var plr2cmp = GetPlayerByIndex(j);
+			// Still enemy players out there?
+			if (CheckTeamHostile(plr, plr2cmp) ) return;
+		}
+	}
+
+	// No enemy players left, goal fulfilled.
+	RoundManager()->RemoveRoundEndBlocker(this);
+	TurnManager()->RegisterTurnStartBlocker(this);
 }
 
 func NotifyHUD()
@@ -157,6 +169,17 @@ func SaveFirstCrew(int player)
 	crew->Enter(crew_container);
 
 	player_protected_crew[player] = crew;
+}
+
+func EnableSavedCrews()
+{
+	for (var i = 0; i < GetPlayerCount(); i++)
+	{
+		var player = GetPlayerByIndex(i);
+		var crew = GetProtectedCrew(player);
+		crew->SetCrewEnabled(true);
+		SetCursor(player, crew, false);		
+	}
 }
 
 func GetProtectedCrew(int player)
@@ -262,5 +285,6 @@ func GetPlayerHealthMax(int player)
 
 func IsPlayerEliminated(int player)
 {
+	if (!RoundManager()->IsRoundActive()) return false;
 	return GetPlayerHealth(player) <= 0;
 }

@@ -39,6 +39,8 @@ public func GetActiveCrew()
 func OnTurnReset(int turn_number)
 {
 	_inherited(turn_number);
+	
+	Log("Turn Reset");	
 
 	// cycle the active player when the round is reset
 	active_player_index++;
@@ -46,17 +48,20 @@ func OnTurnReset(int turn_number)
 	if (active_player_index >= GetPlayerCount())
 	{
 		active_player_index = 0;
+		Log("Exceeded player count, active player will be 0");
 	}
 	
 	// do not use the same player twice in a row if one player was eliminated
 	if (active_player_index == last_player_index && GetPlayerCount() > 1)
 	{
 		active_player_index++;
+		Log("Active player was already active last turn - next player is %d", active_player_index);
 	}
 	
 	// skip eliminated players
 	while(Goal()->IsPlayerEliminated(GetPlayerByIndex(active_player_index)) && active_player_index < GetPlayerCount())
 	{
+		Log("Player %d is eliminated, skipping", active_player_index);
 		active_player_index++;
 	}
 	
