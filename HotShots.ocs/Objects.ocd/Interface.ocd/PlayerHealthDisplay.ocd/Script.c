@@ -9,9 +9,11 @@ local menu_def; // the main window properties
 local player_bars; // counter for player bars
 
 static const GUI_PlrHlDis_WindowPosX_Percent = 0;
-static const GUI_PlrHlDis_WindowPosX_10thEm = 5;
+static const GUI_PlrHlDis_WindowPosX_10thEm = 1;
 static const GUI_PlrHlDis_WindowWidth_10thEm = 50;
+static const GUI_PlrHlDis_WindowPosY_10thEm = 70;
 
+static const GUI_PlrHlDis_BarHeight_10thEm = 12;
 
 global func GuiPlayerHealthDisplay()
 {
@@ -28,7 +30,7 @@ func Create()
 {
 	var window_x = GUI_PlrHlDis_WindowPosX_10thEm;
 	var window_width = GUI_PlrHlDis_WindowWidth_10thEm;
-	var window_y = 100;
+	var window_y = GUI_PlrHlDis_WindowPosY_10thEm;
 	var window_height = 10;
 
 	menu_def = 
@@ -161,14 +163,12 @@ private func GetPlayerBarName(int bar)
 
 private func GetPlayerBarTop(int bar)
 {
-	var bar_height = 12;
-	return bar * bar_height;
+	return bar * GUI_PlrHlDis_BarHeight_10thEm;
 }
 
 private func GetPlayerBarBottom(int bar)
 {
-	var bar_height = 12;
-	return (bar + 1) * bar_height;
+	return (bar + 1) * GUI_PlrHlDis_BarHeight_10thEm;
 }
 
 private func GetPlayerBarFillWidth(int health_current, int health_max)
