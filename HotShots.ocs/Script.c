@@ -16,6 +16,7 @@ protected func Initialize()
 	CreateObject(Turn_ActionCountdown);
 	CreateObject(Turn_FinishCountdown);
 	CreateObject(Environment_TurnManager);
+	CreateObject(GUI_PlayerHealthDisplay);
 
 	// goal
 	CreateObject(Goal_Elimination);
@@ -35,6 +36,7 @@ protected func Initialize()
 	
 	return;
 }
+
 
 private func PlaceEdges()
 {
