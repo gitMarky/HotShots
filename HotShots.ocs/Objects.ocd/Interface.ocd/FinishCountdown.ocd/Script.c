@@ -34,8 +34,8 @@ func OnCountdownEnded()
 
 
 /**
- Use this to access the selection countdown object from other objects.
- @return object A {@link Turn_SelectionCountdown#index selection countdown} object,
+ Use this to access the finish countdown object from other objects.
+ @return object A {@link Turn_FinishCountdown#index selection countdown} object,
          or {@c nil} if it does not exist.
  */
 global func TurnFinishCountdown()

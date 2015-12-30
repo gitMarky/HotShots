@@ -6,6 +6,8 @@
 func StartCountdown(int seconds)
 {
 	if (!seconds) seconds = DefaultCountdown();
+	
+	Log("Starting Countdown (Object %d: %s)", ObjectNumber(), GetName());
 
 	var effect = AddEffect("IntCountdown", this, 1, 36, this);
 	SetCountdown(effect, seconds);

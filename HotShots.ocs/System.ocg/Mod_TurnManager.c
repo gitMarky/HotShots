@@ -47,18 +47,27 @@ func OnTurnReset(int turn_number)
 	{
 		active_player_index = 0;
 	}
+	
+	Log("Turn was reset: %d - Active player will be number %d: %s", turn_number, active_player_index, GetPlayerName(GetPlayerByIndex(active_player_index)));
 }
 
 func OnTurnStart(int turn_number)
 {
 	_inherited(turn_number);
 
+	Log("Turn Started: %d", turn_number);
 	TurnSelectionCountdown()->StartCountdown();
 }
 
+func OnTurnEnd(int turn_number)
+{
+	_inherited(turn_number);
+	Log("Turn Ended: %d", turn_number);
+}
 
 func OnRoundReset(int round_number)
 {
+	Log("Round Reset: %d", round_number);
 	RegisterTurnStartBlocker(RoundManager());
 }
 
@@ -68,6 +77,7 @@ func OnRoundReset(int round_number)
  */
 func OnRoundStart(int round_number)
 {
+	Log("Round Start: %d", round_number);
 	RemoveTurnStartBlocker(RoundManager());
 }
  
