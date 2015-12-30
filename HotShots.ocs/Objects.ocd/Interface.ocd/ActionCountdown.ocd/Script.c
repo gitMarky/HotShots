@@ -33,6 +33,7 @@ func EnableCursorOnly()
 {
 	var player = TurnManager()->GetActivePlayer();
 	var cursor = GetCursor(player);
+	SetPlrView(player, cursor);
 	TurnManager()->SetActiveCrew(cursor);
 	for (var i = 0; i < GetCrewCount(player); i++)
 	{

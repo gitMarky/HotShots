@@ -121,6 +121,13 @@ func OnRoundReset(int round)
 	player_health_cur = [];
 	
 	RoundManager()->RegisterRoundEndBlocker(this);
+	
+	for (var i = 0; i < GetPlayerCount(); i++)
+	{
+		var player = GetPlayerByIndex(i);
+		
+		FocusCrew(player, GetProtectedCrew(player));
+	}
 
 	_inherited(round);
 }
@@ -178,7 +185,7 @@ func EnableSavedCrews()
 		var player = GetPlayerByIndex(i);
 		var crew = GetProtectedCrew(player);
 		crew->SetCrewEnabled(true);
-		SetCursor(player, crew, false);		
+		FocusCrew(player, crew);
 	}
 }
 
@@ -196,7 +203,9 @@ func CreatePlayerCrews()
 {
 	for (var i = 0; i < GetPlayerCount(); i++)
 	{
-		CreatePlayerCrew(GetPlayerByIndex(i));
+		var player = GetPlayerByIndex(i);
+		CreatePlayerCrew(player);
+		GetProtectedCrew(player)->SetCrewStatus(player, false);
 	}
 }
 
@@ -210,8 +219,9 @@ func CreatePlayerCrew(int player)
 		crew->MakeCrewMember(player);
 		crew->DoEnergy(100000);
 		crew->SetPosition(pos[0], pos[1]);
-		
-		if (i == 0) SetCursor(player, crew);
+
+		// this is the first available crew, since the other one is a saved crew
+		if (i == 1) FocusCrew(player, crew);
 	}
 }
 
@@ -219,7 +229,9 @@ func RemovePlayerCrews()
 {
 	for (var i = 0; i < GetPlayerCount(); i++)
 	{
-		RemovePlayerCrew(GetPlayerByIndex(i));
+		var player = GetPlayerByIndex(i);
+		RemovePlayerCrew(player);
+		GetProtectedCrew(player)->SetCrewStatus(player, true);
 	}
 }
 
@@ -228,7 +240,7 @@ func RemovePlayerCrew(int player)
 	for (var i = 0; i < GetCrewCount(player); i++)
 	{
 		var crew = GetCrew(player, i);
-		
+
 		if (!IsProtectedCrew(crew)) crew->RemoveObject();
 	}
 }
@@ -287,4 +299,10 @@ func IsPlayerEliminated(int player)
 {
 	if (!RoundManager()->IsRoundActive()) return false;
 	return GetPlayerHealth(player) <= 0;
+}
+
+func FocusCrew(int player, object crew)
+{
+	SetCursor(player, crew, false);
+	SetPlrView(player, crew);
 }
