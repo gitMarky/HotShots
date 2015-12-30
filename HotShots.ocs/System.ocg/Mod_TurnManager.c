@@ -53,7 +53,7 @@ func OnTurnReset(int turn_number)
 	SetActiveCrew(nil);
 
 	// cycle the active player when the round is reset
-	active_player_index++;
+	if (RoundManager()->IsRoundActive()) active_player_index++;
 	
 	if (active_player_index >= GetPlayerCount())
 	{
