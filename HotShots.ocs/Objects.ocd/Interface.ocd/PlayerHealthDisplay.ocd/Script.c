@@ -13,7 +13,7 @@ static const GUI_PlrHlDis_WindowPosX_10thEm = 1;
 static const GUI_PlrHlDis_WindowWidth_10thEm = 50;
 static const GUI_PlrHlDis_WindowPosY_10thEm = 70;
 
-static const GUI_PlrHlDis_BarHeight_10thEm = 12;
+static const GUI_PlrHlDis_BarHeight_10thEm = 18;
 
 global func GuiPlayerHealthDisplay()
 {
@@ -84,9 +84,8 @@ private func AddPlayerBar()
 		Left = "0%",
 		Right = "100%",
 		Top = "0%",
-		Bottom = PercentAndEm(0, 12),
-		Margin = ["0em", "0.1em"],
-		BackgroundColor = RGB(10, 5, 5),
+		Bottom = PercentAndEm(0, GUI_PlrHlDis_BarHeight_10thEm),
+		BackgroundColor = RGBa(40, 10, 10, 150),
 		Style = GUI_NoCrop,
 		Priority = 3,
 
@@ -94,9 +93,18 @@ private func AddPlayerBar()
 			Target = this,
 			Left = "0%",
 			Right = "100%",
-			Margin = ["0.2em"],
+			Margin = ["0.2em", "1.0em", "0.2em", "0.2em"],
 			BackgroundColor = RGB(255, 255, 255),
 			Priority = 4,
+		},
+		
+		Component_Text = {
+			Style = GUI_TextLeft,
+			Target = this,
+			Left = PercentAndEm(0, 2),
+			Top = PercentAndEm(0, 0),
+			Bottom = PercentAndEm(0, 5),
+			Priority = 5,
 		}
 	};
 
@@ -135,6 +143,8 @@ private func UpdatePlayerDisplay(int index)
 			menu_def[GetPlayerBarName(index)].Player = nil; // displays for all players
 			menu_def[GetPlayerBarName(index)].Component_Fill.Right = GetPlayerBarFillWidth(health_cur, health_max);
 			menu_def[GetPlayerBarName(index)].Component_Fill.BackgroundColor = GetPlayerColor(player);
+			menu_def[GetPlayerBarName(index)].Component_Text.Text = Format("<c e6e6e6>%s: %d/%d</c>", GetPlayerName(player), health_cur, health_max);
+			
 		}
 		//Log("The actual update, player had %d of %d health", health_cur, health_max);
 	}
