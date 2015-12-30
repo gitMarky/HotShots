@@ -84,6 +84,16 @@ private func AddPlayerBar()
 		Bottom = PercentAndEm(0, 10),
 		BackgroundColor = RGB(255, 255, 255),
 		Style = GUI_NoCrop,
+		Priority = 3,
+
+		Component_Fill = {
+			Target = this,
+			Left = "0%",
+			Right = "100%",
+			Margin = ["0.2em"],
+			BackgroundColor = RGB(100, 100, 100),
+			Priority = 4,
+		}
 	};
 
 	menu_def[GetPlayerBarName(player_bars)] = bar;
@@ -112,4 +122,16 @@ private func GetPlayerBarID(int bar)
 private func GetPlayerBarName(int bar)
 {
 	return Format("bar%d", bar);
+}
+
+private func GetPlayerBarTop(int bar)
+{
+}
+
+private func GetPlayerBarBottom(int bar)
+{
+}
+
+private func GetPlayerBarFillWidth(int health_current, int health_max)
+{
 }
