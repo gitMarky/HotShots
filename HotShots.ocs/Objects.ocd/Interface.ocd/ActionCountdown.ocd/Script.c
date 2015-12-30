@@ -5,6 +5,7 @@
 
 #include Library_Countdown
 
+local actions_finished = false;
 
 public func DisplayMessage(int player, int counter)
 {
@@ -21,6 +22,7 @@ public func DisplayMessage(int player, int counter)
 
 public func OnCountdownStarted()
 {
+	actions_finished = false;
 	TurnManager()->RegisterTurnEndBlocker(this);
 	EnableCursorOnly();
 	EnableInventory();
@@ -31,6 +33,7 @@ func EnableCursorOnly()
 {
 	var player = TurnManager()->GetActivePlayer();
 	var cursor = GetCursor(player);
+	TurnManager()->SetActiveCrew(cursor);
 	for (var i = 0; i < GetCrewCount(player); i++)
 	{
 		var crew = GetCrew(player, i);
@@ -53,11 +56,16 @@ func OnCountdownEnded()
 
 func FinishActions()
 {
-	TurnFinishCountdown()->BlockTurnEnd();
-	TurnManager()->RemoveTurnEndBlocker(this);
-	DisableInventory();
-	DisableCrew();
-	Abort();
+	if (!actions_finished)
+	{
+		actions_finished = true;
+
+		TurnFinishCountdown()->BlockTurnEnd();
+		TurnManager()->RemoveTurnEndBlocker(this);
+		DisableInventory();
+		DisableCrew();
+		Abort();
+	}
 }
 
 

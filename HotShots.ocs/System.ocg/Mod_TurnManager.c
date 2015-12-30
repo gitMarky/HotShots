@@ -6,6 +6,7 @@
 
 local last_player_index = -1;
 local active_player_index; // this player is currently playing
+local active_crew; // this crew is currently being controlled
 
 
 /**
@@ -29,7 +30,13 @@ public func GetActivePlayer()
  */
 public func GetActiveCrew()
 {
-	return GetCursor(GetActivePlayer());
+	return active_crew;
+}
+
+
+public func SetActiveCrew(object crew)
+{
+	active_crew = crew;
 }
 
 
@@ -40,7 +47,10 @@ func OnTurnReset(int turn_number)
 {
 	_inherited(turn_number);
 	
-	Log("Turn Reset");	
+	Log("Turn Reset");
+	
+	// forget the active crew
+	SetActiveCrew(nil);
 
 	// cycle the active player when the round is reset
 	active_player_index++;
