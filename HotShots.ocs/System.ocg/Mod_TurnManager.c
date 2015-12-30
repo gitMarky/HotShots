@@ -4,7 +4,7 @@
 
 #appendto Environment_TurnManager
 
-
+local last_player_index = -1;
 local active_player_index; // this player is currently playing
 
 
@@ -46,6 +46,12 @@ func OnTurnReset(int turn_number)
 	if (active_player_index >= GetPlayerCount())
 	{
 		active_player_index = 0;
+
+		// do not use the same player twice in a row if one player was eliminated
+		if (active_player_index == last_player_index && GetPlayerCount() > 1)
+		{
+			active_player_index++;
+		}
 	}
 	
 	Log("Turn was reset: %d - Active player will be number %d: %s", turn_number, active_player_index, GetPlayerName(GetPlayerByIndex(active_player_index)));
@@ -56,6 +62,7 @@ func OnTurnStart(int turn_number)
 	_inherited(turn_number);
 
 	Log("Turn Started: %d", turn_number);
+	last_player_index = active_player_index;
 	TurnSelectionCountdown()->StartCountdown();
 }
 
