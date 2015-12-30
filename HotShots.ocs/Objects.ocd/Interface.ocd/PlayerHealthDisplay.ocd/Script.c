@@ -3,10 +3,10 @@
  @author Marky
 */
 
-local menu_id;
-local menu_def;
+local menu_id;  // the main window GUI id
+local menu_def; // the main window properties
 
-local player_bars;
+local player_bars; // counter for player bars
 
 static const GUI_PlrHlDis_WindowPosX_Percent = 0;
 static const GUI_PlrHlDis_WindowPosX_10thEm = 5;
@@ -59,12 +59,14 @@ func Hide()
 // Update everything
 private func UpdatePlayerDisplays()
 {
-	while (GetLength(player_bars) < GetPlayerCount())
+	// add as many player bars as there are players
+	while (player_bars < GetPlayerCount())
 	{
 		AddPlayerBar();
 	}
 
-	for (var i = 0; i < GetLength(player_bars); i++)
+	// update display for existing bars
+	for (var i = 0; i < player_bars; i++)
 	{
 		UpdatePlayerDisplay(i);
 	}
@@ -72,6 +74,25 @@ private func UpdatePlayerDisplays()
 
 private func AddPlayerBar()
 {
+	// build new submenu
+	var bar = {
+		ID = GetPlayerBarID(player_bars),
+		Target = this,
+		Left = "0%",
+		Right = "100%",
+		Top = "0%",
+		Bottom = PercentAndEm(0, 10),
+		BackgroundColor = RGB(255, 255, 255),
+		Style = GUI_NoCrop,
+	};
+
+	menu_def[GetPlayerBarName(player_bars)] = bar;
+
+	// add to existing gui
+	GuiUpdate(menu_def, menu_id);
+	
+	// increase number of bars
+	player_bars++;
 }
 
 private func UpdatePlayerDisplay(int player)
@@ -81,4 +102,14 @@ private func UpdatePlayerDisplay(int player)
 private func PercentAndEm(int percent, int em, int factor)
 {
 	return Format("%d%%%s", percent, ToEmString(em, factor));
+}
+
+private func GetPlayerBarID(int bar)
+{
+	return 100 + bar;
+}
+
+private func GetPlayerBarName(int bar)
+{
+	return Format("bar%d", bar);
 }
