@@ -306,3 +306,9 @@ func FocusCrew(int player, object crew)
 	SetCursor(player, crew, false);
 	SetPlrView(player, crew);
 }
+
+public func ReleaseCrew(object crew, bool instant)
+{
+	if (IsProtectedCrew(crew)) return;
+	_inherited(crew, instant);
+}
