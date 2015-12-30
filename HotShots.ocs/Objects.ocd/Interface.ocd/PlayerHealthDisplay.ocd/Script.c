@@ -8,7 +8,9 @@ local menu_def;
 
 local player_bars;
 
-static const GUI_PlayerHealthDisplay_BarWidth_Em = 40;
+static const GUI_PlrHlDis_WindowPosX_Percent = 0;
+static const GUI_PlrHlDis_WindowPosX_10thEm = 5;
+static const GUI_PlrHlDis_WindowWidth_10thEm = 50;
 
 
 global func GuiPlayerHealthDisplay()
@@ -24,14 +26,19 @@ func Initialize()
 
 func Create()
 {
+	var window_x = GUI_PlrHlDis_WindowPosX_10thEm;
+	var window_width = GUI_PlrHlDis_WindowWidth_10thEm;
+	var window_y = 100;
+	var window_height = 10;
+
 	menu_def = 
 	{
 		ID = 1,
 		Target = this,
-		Left = "0.5em", //"0%",
-		Top = "10em",
-		Right = "5.5em", //Format("0%%%s", ToEmString(GUI_PlayerHealthDisplay_BarWidth_Em)),		
-		Bottom = "11em", //"5%",
+		Left = PercentAndEm(0, window_x),
+		Top = PercentAndEm(0, window_y),
+		Right = PercentAndEm(0, window_x + window_width),		
+		Bottom = PercentAndEm(0, window_y + window_height),
 		BackgroundColor = RGBa(40, 40, 40, 120),
 		Style = GUI_Multiple | GUI_VerticalLayout | GUI_IgnoreMouse
 	};
@@ -69,4 +76,9 @@ private func AddPlayerBar()
 
 private func UpdatePlayerDisplay(int player)
 {
+}
+
+private func PercentAndEm(int percent, int em, int factor)
+{
+	return Format("%d%%%s", percent, ToEmString(em, factor));
 }
