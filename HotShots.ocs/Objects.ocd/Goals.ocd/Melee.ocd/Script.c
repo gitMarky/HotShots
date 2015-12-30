@@ -9,6 +9,10 @@
 
 #include Goal_Melee
 
+local crew_count = 2;
+
+local player_protected_crew = [];
+
 func Initialize()
 {
 	RoundManager()->RegisterRoundEndBlocker(this);
@@ -37,6 +41,7 @@ func MakeHostileToAll(int newplr, int team)
 protected func InitializePlayer(int newplr, int x, int y, object base, int team)
 {
 	MakeHostileToAll(newplr, team);
+	SaveFirstCrew(newplr);
 	return inherited(newplr, x, y, base, team, ...);
 }
 
@@ -81,11 +86,13 @@ global func Goal()
 func OnRoundStart(int round)
 {
 	GuiPlayerHealthDisplay()->Display();
+	CreatePlayerCrews();
 }
 
 func OnRoundEnd(int round)
 {
 	GuiPlayerHealthDisplay()->Hide();
+	RemovePlayerCrews();
 }
 
 func NotifyHUD()
@@ -95,3 +102,67 @@ func NotifyHUD()
 }
 
 local Name = "$Name$";
+
+func SaveFirstCrew(int player)
+{
+	var crew = GetCrew(player);	
+	var crew_container = crew->Contained();
+
+	if (!crew_container) crew_container = CreateObject(Dummy);
+
+	crew_container->SetPosition(LandscapeWidth() / 2, LandscapeHeight() / 2);
+	crew->Enter(crew_container);
+
+	player_protected_crew[player] = crew;
+}
+
+func GetProtectedCrew(int player)
+{
+	return player_protected_crew[player];
+}
+
+func IsProtectedCrew(object crew)
+{
+	return IsValueInArray(player_protected_crew, crew);
+}
+
+func CreatePlayerCrews()
+{
+	for (var i = 0; i < GetPlayerCount(); i++)
+	{
+		CreatePlayerCrew(GetPlayerByIndex(i));
+	}
+}
+
+func CreatePlayerCrew(int player)
+{
+	for (var i = 0; i < crew_count; i++)
+	{
+		var pos = Goal_DeathMatch->FindRelaunchPos(player);
+
+		var crew = CreateObject(Clonk, 0, 0, player);
+		crew->MakeCrewMember(player);
+		crew->DoEnergy(100000);
+		crew->SetPosition(pos[0], pos[1]);
+		
+		if (i == 0) SetCursor(player, crew);
+	}
+}
+
+func RemovePlayerCrews()
+{
+	for (var i = 0; i < GetPlayerCount(); i++)
+	{
+		RemovePlayerCrew(GetPlayerByIndex(i));
+	}
+}
+
+func RemovePlayerCrew(int player)
+{
+	for (var i = 0; i < GetCrewCount(player); i++)
+	{
+		var crew = GetCrew(player, i);
+		
+		if (!IsProtectedCrew(crew)) crew->RemoveObject();
+	}
+}

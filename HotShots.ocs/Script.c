@@ -8,7 +8,6 @@
 
 protected func Initialize()
 {
-
 	// configuration
 	CreateObject(Environment_RoundManager);
 	CreateObject(Environment_Configuration);
