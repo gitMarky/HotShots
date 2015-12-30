@@ -39,7 +39,7 @@ func Create()
 		Top = PercentAndEm(0, window_y),
 		Right = PercentAndEm(0, window_x + window_width),		
 		Bottom = PercentAndEm(0, window_y + window_height),
-		BackgroundColor = RGBa(40, 40, 40, 120),
+		BackgroundColor = RGBa(0, 0, 0, 0),
 		Style = GUI_Multiple | GUI_VerticalLayout | GUI_IgnoreMouse | GUI_NoCrop
 	};
 	
@@ -82,8 +82,9 @@ private func AddPlayerBar()
 		Left = "0%",
 		Right = "100%",
 		Top = "0%",
-		Bottom = PercentAndEm(0, 10),
-		BackgroundColor = RGB(255, 255, 255),
+		Bottom = PercentAndEm(0, 12),
+		Margin = ["0em", "0.1em"],
+		BackgroundColor = RGB(10, 5, 5),
 		Style = GUI_NoCrop,
 		Priority = 3,
 
@@ -92,7 +93,7 @@ private func AddPlayerBar()
 			Left = "0%",
 			Right = "100%",
 			Margin = ["0.2em"],
-			BackgroundColor = RGB(100, 100, 100),
+			BackgroundColor = RGB(255, 255, 255),
 			Priority = 4,
 		}
 	};
@@ -131,8 +132,9 @@ private func UpdatePlayerDisplay(int index)
 		{
 			menu_def[GetPlayerBarName(index)].Player = nil; // displays for all players
 			menu_def[GetPlayerBarName(index)].Component_Fill.Right = GetPlayerBarFillWidth(health_cur, health_max);
+			menu_def[GetPlayerBarName(index)].Component_Fill.BackgroundColor = GetPlayerColor(player);
 		}
-		Log("The actual update, player had %d of %d health", health_cur, health_max);
+		//Log("The actual update, player had %d of %d health", health_cur, health_max);
 	}
 	else
 	{
@@ -159,13 +161,13 @@ private func GetPlayerBarName(int bar)
 
 private func GetPlayerBarTop(int bar)
 {
-	var bar_height = 10;
+	var bar_height = 12;
 	return bar * bar_height;
 }
 
 private func GetPlayerBarBottom(int bar)
 {
-	var bar_height = 10;
+	var bar_height = 12;
 	return (bar + 1) * bar_height;
 }
 
