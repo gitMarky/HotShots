@@ -48,7 +48,7 @@ func OnTurnReset(int turn_number)
 	_inherited(turn_number);
 	
 	Log("Turn Reset");
-	
+
 	// forget the active crew
 	SetActiveCrew(nil);
 
@@ -96,7 +96,7 @@ func OnTurnEnd(int turn_number)
 func OnRoundReset(int round_number)
 {
 	active_player_index = 0;
-	last_player_index = 0;
+	last_player_index = -1;
 
 	Log("Round Reset: %d", round_number);
 	RegisterTurnStartBlocker(RoundManager());
