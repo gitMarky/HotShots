@@ -12,6 +12,8 @@
 local crew_count = 2;
 
 local player_protected_crew = [];
+local player_health_max = [];
+local player_health_cur = [];
 
 func Initialize()
 {
@@ -85,8 +87,9 @@ global func Goal()
 
 func OnRoundStart(int round)
 {
-	GuiPlayerHealthDisplay()->Display();
 	CreatePlayerCrews();
+	DeterminePlayerHealthMax();
+	GuiPlayerHealthDisplay()->Display();
 }
 
 func OnRoundEnd(int round)
@@ -95,8 +98,21 @@ func OnRoundEnd(int round)
 	RemovePlayerCrews();
 }
 
+func OnRoundReset(int round)
+{
+	player_health_max = [];
+	player_health_cur = [];
+	
+	_inherited(round);
+}
+
 func NotifyHUD()
 {
+	for (var i = 0; i < GetPlayerCount(); i++)
+	{
+		DeterminePlayerHealth(GetPlayerByIndex(i));
+	}
+
 	GuiPlayerHealthDisplay()->UpdatePlayerDisplays();
 	_inherited();
 }
@@ -165,4 +181,54 @@ func RemovePlayerCrew(int player)
 		
 		if (!IsProtectedCrew(crew)) crew->RemoveObject();
 	}
+}
+
+func DeterminePlayerHealthMax()
+{
+	for (var i = 0; i < GetPlayerCount(); i++)
+	{
+		var player = GetPlayerByIndex(i);
+		var health_max = 0;
+		for (var c = 0; c < GetCrewCount(player); c++)
+		{
+			var crew = GetCrew(player, c);
+			// Health
+			var health_phys = crew->~GetMaxEnergy();
+	
+			if (health_phys && !Goal()->IsProtectedCrew(crew))
+			{
+				health_max += health_phys;
+			}
+		}
+
+		player_health_max[player] = health_max;
+		player_health_cur[player] = health_max;
+	}
+}
+
+func DeterminePlayerHealth(int player)
+{
+	var health_cur = 0;
+	for (var c = 0; c < GetCrewCount(player); c++)
+	{
+		var crew = GetCrew(player, c);
+		// Health
+
+		if (!IsProtectedCrew(crew))
+		{
+			health_cur += crew->GetEnergy();
+		}
+	}
+
+	player_health_cur[player] = health_cur;
+}
+
+func GetPlayerHealth(int player)
+{
+	return player_health_cur[player];
+}
+
+func GetPlayerHealthMax(int player)
+{
+	return player_health_max[player];
 }

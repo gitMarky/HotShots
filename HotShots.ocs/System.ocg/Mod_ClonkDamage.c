@@ -2,7 +2,7 @@
 
 func Construction()
 {
-	var effect = AddEffect("IntDamageDisplay", this, 1, 7, this);
+	var effect = AddEffect("IntDamageDisplay", this, 1, 3, this);
 
 	effect.energy_old = GetEnergy();
 	effect.energy_new = GetEnergy();
@@ -20,20 +20,8 @@ func FxIntDamageDisplayTimer(object target, proplist effect, int timer)
 	var damage = effect.energy_new - effect.energy_old;
 	if (damage)
 	{
-		var counter = CreateObject(Dummy);
-		counter->SetShape(-1, -1, 3, 3);
-		counter->AddVertex(0, -4);
-		counter->AddEffect("IntDamageMessage", counter, 1, 1, nil, Clonk);
-		counter->FadeOut(100, true);
-		counter.DamageMessage = Format("%d", damage);
-		counter.Hit = Clonk.FxIntDamageMessageHit;
-		counter.Visibility = VIS_All;
-		counter->SetObjectLayer(counter);
-		counter->SetCategory(C4D_Object);
-
-		var speed = RandomX(15, 25);
-		var angle = RandomX(20, 40) * (-1 + 2 * Random(2));
-		counter->SetSpeed(Sin(angle, speed), Cos(angle, -speed));
+		Goal()->DeterminePlayerHealth(target->GetOwner());
+		FxIntDamageDisplayCastMessage(damage);
 	}
 
 	// slowly adjust displayed energy
@@ -78,6 +66,24 @@ func FxIntDamageDisplayTimer(object target, proplist effect, int timer)
 	{
 		effect.dummy->Message("<c %x>%d</c>|", target->GetColor(), effect.energy_dis);
 	}
+}
+
+protected func FxIntDamageDisplayCastMessage(int damage)
+{
+	var counter = CreateObject(Dummy);
+	counter->SetShape(-1, -1, 3, 3);
+	counter->AddVertex(0, -4);
+	counter->AddEffect("IntDamageMessage", counter, 1, 1, nil, Clonk);
+	counter->FadeOut(100, true);
+	counter.DamageMessage = Format("%d", damage);
+	counter.Hit = Clonk.FxIntDamageMessageHit;
+	counter.Visibility = VIS_All;
+	counter->SetObjectLayer(counter);
+	counter->SetCategory(C4D_Object);
+
+	var speed = RandomX(15, 25);
+	var angle = RandomX(20, 40) * (-1 + 2 * Random(2));
+	counter->SetSpeed(Sin(angle, speed), Cos(angle, -speed));
 }
 
 protected func FxIntDamageMessageTimer(object target, proplist effect, int timer)

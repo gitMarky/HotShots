@@ -123,30 +123,14 @@ private func UpdatePlayerDisplay(int index)
 	
 	if (player >= 0)
 	{
-		var health_max = 0;
-		var health_cur = 0;
-		for (var c = 0; c < GetCrewCount(player); c++)
-		{
-			var crew = GetCrew(player, c);
-			// Health
-			var health_phys = crew->~GetMaxEnergy();
-	
-			if (health_phys)
-			{
-				health_max += health_phys;
-				health_cur += crew->GetEnergy();
-			}
-		}
-		
-		if (health_max)
-		{
-			menu_def[GetPlayerBarName(index)].Player = nil; // displays for all players
-			menu_def[GetPlayerBarName(index)].Component_Fill.Right = GetPlayerBarFillWidth(health_cur, health_max);
-			menu_def[GetPlayerBarName(index)].Component_Fill.BackgroundColor = GetPlayerColor(player);
-			menu_def[GetPlayerBarName(index)].Component_Text.Text = Format("<c e6e6e6>%s: %d/%d</c>", GetPlayerName(player), health_cur, health_max);
-			
-		}
-		//Log("The actual update, player had %d of %d health", health_cur, health_max);
+		var health_max = Goal()->GetPlayerHealthMax(player);
+		var health_cur = Goal()->GetPlayerHealth(player);
+		if (!health_max) return;
+
+		menu_def[GetPlayerBarName(index)].Player = nil; // displays for all players
+		menu_def[GetPlayerBarName(index)].Component_Fill.Right = GetPlayerBarFillWidth(health_cur, health_max);
+		menu_def[GetPlayerBarName(index)].Component_Fill.BackgroundColor = GetPlayerColor(player);
+		menu_def[GetPlayerBarName(index)].Component_Text.Text = Format("<c e6e6e6>%s: %d/%d</c>", GetPlayerName(player), health_cur, health_max);
 	}
 	else
 	{
