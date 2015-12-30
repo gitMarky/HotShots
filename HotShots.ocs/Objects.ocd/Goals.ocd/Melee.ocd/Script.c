@@ -50,11 +50,16 @@ protected func InitializePlayer(int newplr, int x, int y, object base, int team)
 
 private func CheckTeamHostile(int plr1, int plr2)
 {
+	// eliminated players count as not hostile
+	if (IsPlayerEliminated(plr1)) return false;
+	if (IsPlayerEliminated(plr2)) return false;
+
+	// check teams
 	var team1 = GetPlayerTeam(plr1);
-	if (team1 != GetPlayerTeam(plr2))
-		return true;
-	if (team1)
-		return false;
+	if (team1 != GetPlayerTeam(plr2)) return true;
+	if (team1) return false;
+	
+	// no teams? check hostility directly
 	return Hostile(plr1, plr2);
 }
 
@@ -63,6 +68,9 @@ public func IsFulfilled()
 {
 	// If Teams.txt-Teams still need to be chosen, the goal cannot be fulfilled.
 	if (GetPlayerTeam(GetPlayerByIndex()) == -1) return;
+
+	// If the round is not active the goal cannot be fulfilled.
+	if (!RoundManager()->IsRoundActive()) return false;
 
 	for (var i = 0; i < GetPlayerCount(); i++)
 	{
@@ -75,10 +83,27 @@ public func IsFulfilled()
 			if (CheckTeamHostile(plr, plr2cmp) ) return false;
 		}
 	}
-	
+
 	// No enemy players, goal fulfilled.
-	return false; // was: true;
+	return true;
 }
+
+
+protected func AllGoalsFulfilled()
+{
+	// We're done. Play some sound
+	Sound("Fanfare", true);
+	
+	if (false) // TODO: last round? schedule game over call
+	{
+		AddEffect("IntGoalDone", nil, 1, 30, nil, Library_Goal);
+	}
+	else // otherwise simply start a new round.
+	{
+		RoundManager()->RemoveRoundEndBlocker(this);
+	}
+}
+
 
 global func Goal()
 {
@@ -103,6 +128,8 @@ func OnRoundReset(int round)
 	player_health_max = [];
 	player_health_cur = [];
 	
+	RoundManager()->RegisterRoundEndBlocker(this);
+
 	_inherited(round);
 }
 
@@ -231,4 +258,9 @@ func GetPlayerHealth(int player)
 func GetPlayerHealthMax(int player)
 {
 	return player_health_max[player];
+}
+
+func IsPlayerEliminated(int player)
+{
+	return GetPlayerHealth(player) <= 0;
 }
