@@ -257,7 +257,7 @@ func DeterminePlayerHealthMax()
 			// Health
 			var health_phys = crew->~GetMaxEnergy();
 	
-			if (health_phys && !Goal()->IsProtectedCrew(crew))
+			if (health_phys && !IsProtectedCrew(crew))
 			{
 				health_max += health_phys;
 			}
