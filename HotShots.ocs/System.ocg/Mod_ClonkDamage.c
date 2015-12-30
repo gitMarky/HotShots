@@ -4,6 +4,6 @@
 func Damage(int change, int cause, int by_player)
 {
 	TurnFinishCountdown()->ProlongCountdown();
-	Goal()->UpdateDamageDisplay();
+	GuiPlayerHealthDisplay()->UpdatePlayerDisplays();
 	_inherited(change, cause, by_player);
 }

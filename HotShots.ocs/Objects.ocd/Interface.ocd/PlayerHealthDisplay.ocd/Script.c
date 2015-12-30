@@ -40,7 +40,7 @@ func Create()
 		Right = PercentAndEm(0, window_x + window_width),		
 		Bottom = PercentAndEm(0, window_y + window_height),
 		BackgroundColor = RGBa(40, 40, 40, 120),
-		Style = GUI_Multiple | GUI_VerticalLayout | GUI_IgnoreMouse
+		Style = GUI_Multiple | GUI_VerticalLayout | GUI_IgnoreMouse | GUI_NoCrop
 	};
 	
 	menu_id = GuiOpen(menu_def);
@@ -49,6 +49,7 @@ func Create()
 func Display()
 {
 	GuiUpdate({Player = nil}, menu_id, nil, this);
+	UpdatePlayerDisplays();
 }
 
 func Hide()
@@ -105,8 +106,40 @@ private func AddPlayerBar()
 	player_bars++;
 }
 
-private func UpdatePlayerDisplay(int player)
+private func UpdatePlayerDisplay(int index)
 {
+	var player = GetPlayerByIndex(index);
+	
+	if (player >= 0)
+	{
+		var health_max = 0;
+		var health_cur = 0;
+		for (var c = 0; c < GetCrewCount(player); c++)
+		{
+			var crew = GetCrew(player, c);
+			// Health
+			var health_phys = crew->~GetMaxEnergy();
+	
+			if (health_phys)
+			{
+				health_max += health_phys;
+				health_cur += crew->GetEnergy();
+			}
+		}
+		
+		if (health_max)
+		{
+			menu_def[GetPlayerBarName(index)].Player = nil; // displays for all players
+			menu_def[GetPlayerBarName(index)].Component_Fill.Right = GetPlayerBarFillWidth(health_cur, health_max);
+		}
+		Log("The actual update, player had %d of %d health", health_cur, health_max);
+	}
+	else
+	{
+		menu_def[GetPlayerBarName(index)].Player = NO_OWNER; // hides for all players
+	}
+	
+	GuiUpdate(menu_def, menu_id);
 }
 
 private func PercentAndEm(int percent, int em, int factor)
@@ -126,12 +159,17 @@ private func GetPlayerBarName(int bar)
 
 private func GetPlayerBarTop(int bar)
 {
+	var bar_height = 10;
+	return bar * bar_height;
 }
 
 private func GetPlayerBarBottom(int bar)
 {
+	var bar_height = 10;
+	return (bar + 1) * bar_height;
 }
 
 private func GetPlayerBarFillWidth(int health_current, int health_max)
 {
+	return ToPercentString(1000 * health_current / health_max);
 }

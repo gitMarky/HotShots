@@ -78,10 +78,20 @@ global func Goal()
 	return FindObject(Find_ID(Goal_Elimination));
 }
 
-func UpdateDamageDisplay()
+func OnRoundStart(int round)
 {
-	NotifyHUD();
+	GuiPlayerHealthDisplay()->Display();
 }
 
+func OnRoundEnd(int round)
+{
+	GuiPlayerHealthDisplay()->Hide();
+}
+
+func NotifyHUD()
+{
+	GuiPlayerHealthDisplay()->UpdatePlayerDisplays();
+	_inherited();
+}
 
 local Name = "$Name$";
