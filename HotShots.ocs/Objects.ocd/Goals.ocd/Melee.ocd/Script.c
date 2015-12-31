@@ -15,6 +15,8 @@ local player_protected_crew = [];
 local player_health_max = [];
 local player_health_cur = [];
 
+local saved_relaunch_positions = [];
+
 func Initialize()
 {
 	RoundManager()->RegisterRoundEndBlocker(this);
@@ -96,6 +98,8 @@ global func Goal()
 func OnRoundStart(int round)
 {
 	Log("Round Start");
+	
+	ScanRelaunchPositions();
 
 	CreatePlayerCrews();
 	DeterminePlayerHealthMax();
@@ -213,7 +217,7 @@ func CreatePlayerCrew(int player)
 {
 	for (var i = 0; i < crew_count; i++)
 	{
-		var pos = Goal_DeathMatch->FindRelaunchPos(player);
+		var pos = FindRelaunchPos(player);
 
 		var crew = CreateObject(Clonk, 0, 0, player);
 		crew->MakeCrewMember(player);
@@ -311,4 +315,53 @@ public func ReleaseCrew(object crew, bool instant)
 {
 	if (IsProtectedCrew(crew)) return;
 	_inherited(crew, instant);
+}
+
+private func ScanRelaunchPositions()
+{
+	var desired_positions = crew_count * GetPlayerCount();
+	while (GetLength(saved_relaunch_positions) < desired_positions)
+	{
+		var pos = GuessRelaunchPos();
+		if (pos) PushBack(saved_relaunch_positions, pos);
+	}
+}
+
+private func GuessRelaunchPos()
+{
+	var tx, ty; // Test position.
+	for (var i = 0; i < 500; i++)
+	{
+		tx = Random(LandscapeWidth());
+		ty = Random(LandscapeHeight());
+		if (GBackSemiSolid(AbsX(tx), AbsY(ty))
+		 || GBackSemiSolid(AbsX(tx+5), AbsY(ty+10))
+		 || GBackSemiSolid(AbsX(tx+5), AbsY(ty-10))
+		 || GBackSemiSolid(AbsX(tx-5), AbsY(ty+10))
+		 || GBackSemiSolid(AbsX(tx-5), AbsY(ty-10))
+		// different from other goals: must be on the ground
+		 || !GBackSolid(AbsX(tx), AbsY(ty+12))
+		 || IsRelaunchPositionTooClose(tx, ty))
+			continue;
+
+		// Success.
+		return [tx, ty];
+	}
+	return nil;
+}
+
+private func FindRelaunchPos(int plr)
+{
+	return PopFront(saved_relaunch_positions);
+}
+
+private func IsRelaunchPositionTooClose(int x, int y)
+{
+	for (var saved_pos in saved_relaunch_positions)
+	{
+		if (Distance(x, y, saved_pos[0], saved_pos[1]) < 30)
+			return true;
+	}
+
+	return false;
 }
