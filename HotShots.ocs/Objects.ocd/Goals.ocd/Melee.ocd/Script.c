@@ -15,7 +15,7 @@ local player_protected_crew = [];
 local player_health_max = [];
 local player_health_cur = [];
 
-local saved_relaunch_positions = [];
+local saved_starting_positions = [];
 
 func Initialize()
 {
@@ -99,7 +99,7 @@ func OnRoundStart(int round)
 {
 	Log("Round Start");
 	
-	ScanRelaunchPositions();
+	ScanStartingPositions();
 
 	CreatePlayerCrews();
 	DeterminePlayerHealthMax();
@@ -217,7 +217,7 @@ func CreatePlayerCrew(int player)
 {
 	for (var i = 0; i < crew_count; i++)
 	{
-		var pos = FindRelaunchPos(player);
+		var pos = FindStartingPosition(player);
 
 		var crew = CreateObject(Clonk, 0, 0, player);
 		crew->MakeCrewMember(player);
@@ -317,17 +317,17 @@ public func ReleaseCrew(object crew, bool instant)
 	_inherited(crew, instant);
 }
 
-private func ScanRelaunchPositions()
+private func ScanStartingPositions()
 {
 	var desired_positions = crew_count * GetPlayerCount();
-	while (GetLength(saved_relaunch_positions) < desired_positions)
+	while (GetLength(saved_starting_positions) < desired_positions)
 	{
-		var pos = GuessRelaunchPos();
-		if (pos) PushBack(saved_relaunch_positions, pos);
+		var pos = GuessStartingPosition();
+		if (pos) PushBack(saved_starting_positions, pos);
 	}
 }
 
-private func GuessRelaunchPos()
+private func GuessStartingPosition()
 {
 	var tx, ty; // Test position.
 	for (var i = 0; i < 500; i++)
@@ -341,7 +341,7 @@ private func GuessRelaunchPos()
 		 || GBackSemiSolid(AbsX(tx-5), AbsY(ty-10))
 		// different from other goals: must be on the ground
 		 || !GBackSolid(AbsX(tx), AbsY(ty+12))
-		 || IsRelaunchPositionTooClose(tx, ty))
+		 || IsStartingPositionTooClose(tx, ty))
 			continue;
 
 		// Success.
@@ -350,14 +350,14 @@ private func GuessRelaunchPos()
 	return nil;
 }
 
-private func FindRelaunchPos(int plr)
+private func FindStartingPosition(int plr)
 {
-	return PopFront(saved_relaunch_positions);
+	return PopFront(saved_starting_positions);
 }
 
-private func IsRelaunchPositionTooClose(int x, int y)
+private func IsStartingPositionTooClose(int x, int y)
 {
-	for (var saved_pos in saved_relaunch_positions)
+	for (var saved_pos in saved_starting_positions)
 	{
 		if (Distance(x, y, saved_pos[0], saved_pos[1]) < 30)
 			return true;
