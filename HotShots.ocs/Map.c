@@ -10,21 +10,60 @@ protected func InitializeMap(proplist map)
 	var map_width = 100 + players * 40;
 	var map_height = BoundBy(map_width / 3, 50, 150);
 
+	var water_level = 7 * map_height / 10;
+
 	map->Resize(map_width, map_height);
 
 	// Draw water at the bottom 20% of the map
-	var water = {Algo = MAPALGO_Rect, X = 0, Y = map_height * 8 / 10, Wdt = map_width, Hgt = map_height * 2 / 10};
+	var water = {Algo = MAPALGO_Rect, X = 0, Y = water_level, Wdt = map_width, Hgt = map_height - water_level};
 	Draw("Water", water);
 
-	// Draw the main surface: an island with the polygon algorithm.
-	var x_points = [              0, 15 * map_width / 100, 48 * map_width / 100, 52 * map_width / 100, 85 * map_width / 100, map_width];
-	var y_points = [map_height + 10, 70 * map_height /100, 60 * map_height /100, 60 * map_height /100, 70 * map_height /100, map_height + 10];
-	var island = {Algo = MAPALGO_Polygon, X = x_points, Y = y_points};
-	island = {Algo = MAPALGO_Turbulence, Seed = Random(65536), Op = island, Amplitude = [25, 15], Scale = 10, Iterations = 1};	
-	Draw("Earth", island);	
+/*
+	var ruin_amount = 5;
+	var ruin_x_start = 30 * map_width / 100;
+	var ruin_x_end = 70 * map_width / 100;
+	var ruin_width = 40 * map_width / (100 * ruin_amount);
+	var ruin_min_width = ruin_width / 3;
+	var ruin_y = 2 * map_height / 10;
+	var ruin_min_height = (water_level - ruin_y) / 2;
+	for (var i = 0; i < ruin_amount; i++)
+	{
+		var width = RandomX(ruin_min_width, ruin_width);
+		width = BoundBy(width, 0, ruin_x_end - width - ruin_x_start);
+		var y = RandomX(ruin_y, ruin_y + ruin_min_height);
+		DrawRuins(ruin_x_start, y, width, water_level - y);
+		
+		var offset = Random(ruin_width - width);
+		ruin_x_start += width + offset;
+	}
+*/
 
-
+	DrawIsland(map_width, map_height, water_level);
 	// Return true to tell the engine a map has been successfully created.
 	return true;
 }
 
+func DrawIsland(int map_width, int map_height, int water_level)
+{
+	// Draw the main surface: an island with the polygon algorithm.
+	var x_points = [              0, 15 * map_width / 100, 50 * map_width / 100, 85 * map_width / 100, map_width];
+	var y_points = [map_height + 10,          water_level, 60 * map_height /100,          water_level, map_height + 10];
+	var island = {Algo = MAPALGO_Polygon, X = x_points, Y = y_points};
+	island = {Algo = MAPALGO_Turbulence, Seed = Random(65536), Op = island, Amplitude = [25, 15], Scale = 10, Iterations = 1};	
+	Draw("Earth", island);
+	DrawMaterial("Earth-earth_root", island);
+	DrawMaterial("Earth-earth_spongy", island);
+	DrawMaterial("Rock-rock", island, 3, 10);
+	DrawMaterial("Tunnel", island, 5, 20);
+}
+
+func DrawRuins(int x, int y, int width, int height)
+{
+	var ruins = {Algo = MAPALGO_Rect, X = x, Y = y, Wdt = width, Hgt = height};
+	ruins = {Algo = MAPALGO_Turbulence, Op = ruins, Iterations = 4};
+	Draw("Earth", ruins);
+	DrawMaterial("Rock-rock", ruins, 2, 10);
+	DrawMaterial("Brick", ruins, 3, 40);
+	DrawMaterial("Tunnel-brickback", ruins, 5, 20);
+	DrawMaterial("Tunnel", ruins);
+}
