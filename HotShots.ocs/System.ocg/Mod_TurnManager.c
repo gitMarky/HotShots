@@ -47,8 +47,6 @@ func OnTurnReset(int turn_number)
 {
 	_inherited(turn_number);
 	
-	Log("Turn Reset");
-
 	// forget the active crew
 	SetActiveCrew(nil);
 
@@ -58,31 +56,25 @@ func OnTurnReset(int turn_number)
 	if (active_player_index >= GetPlayerCount())
 	{
 		active_player_index = 0;
-		Log("Exceeded player count, active player will be 0");
 	}
 	
 	// do not use the same player twice in a row if one player was eliminated
 	if (active_player_index == last_player_index && GetPlayerCount() > 1)
 	{
 		active_player_index++;
-		Log("Active player was already active last turn - next player is %d", active_player_index);
 	}
 	
 	// skip eliminated players
 	while(Goal()->IsPlayerEliminated(GetPlayerByIndex(active_player_index)) && active_player_index < GetPlayerCount())
 	{
-		Log("Player %d is eliminated, skipping", active_player_index);
 		active_player_index++;
 	}
-	
-	Log("Turn was reset: %d - Active player will be number %d: %s", turn_number, active_player_index, GetPlayerName(GetPlayerByIndex(active_player_index)));
 }
 
 func OnTurnStart(int turn_number)
 {
 	_inherited(turn_number);
 
-	Log("Turn Started: %d", turn_number);
 	last_player_index = active_player_index;
 	TurnSelectionCountdown()->StartCountdown();
 }
@@ -90,7 +82,6 @@ func OnTurnStart(int turn_number)
 func OnTurnEnd(int turn_number)
 {
 	_inherited(turn_number);
-	Log("Turn Ended: %d", turn_number);
 }
 
 func OnRoundReset(int round_number)
@@ -98,7 +89,6 @@ func OnRoundReset(int round_number)
 	active_player_index = 0;
 	last_player_index = -1;
 
-	Log("Round Reset: %d", round_number);
 	RegisterTurnStartBlocker(RoundManager());
 }
 
@@ -108,7 +98,6 @@ func OnRoundReset(int round_number)
  */
 func OnRoundStart(int round_number)
 {
-	Log("Round Start: %d", round_number);
 	RemoveTurnStartBlocker(RoundManager());
 }
  

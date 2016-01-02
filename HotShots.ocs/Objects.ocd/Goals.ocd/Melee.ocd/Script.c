@@ -91,8 +91,6 @@ global func Goal()
 
 func OnRoundStart(int round)
 {
-	Log("Round Start");
-	
 	ScanStartingPositions();
 
 	CreatePlayerCrews();
@@ -104,8 +102,6 @@ func OnRoundStart(int round)
 
 func OnRoundEnd(int round)
 {
-	Log("Round End");
-
 	GuiPlayerHealthDisplay()->Hide();
 	RemovePlayerCrews();
 	EnableSavedCrews();
@@ -120,8 +116,6 @@ func OnRoundEnd(int round)
 
 func OnRoundReset(int round)
 {
-	Log("Round Reset");
-
 	player_health_max = [];
 	player_health_cur = [];
 	

@@ -51,6 +51,5 @@ func DefaultCountdown(){ return 3;}
 
 func ProlongCountdown()
 {
-	Log("Prolonged countdown");
 	if (IsActive()) StartCountdown();
 }
