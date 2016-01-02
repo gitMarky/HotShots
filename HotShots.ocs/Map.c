@@ -41,7 +41,7 @@ func DrawIsland(int map_width, int map_height, int water_level)
 
 func DrawRuins(int map_width, int map_height, int water_level)
 {
-	var ruin_amount = 5;
+	var ruin_amount = GetStartupPlayerCount() + 1;
 	var ruin_x_start = 22 * map_width / 100;
 	var ruin_x_end = 78 * map_width / 100;
 	var ruin_width = (ruin_x_end - ruin_x_start) / (ruin_amount + 1);
@@ -77,7 +77,7 @@ func DrawRuin(int x, int y, int width, int height)
 
 	// draw the actual ruins
 
-	var wdt = RandomX(width / 3, 8 * width / 10); // actual ruin is smaller
+	var wdt = RandomX(width / 3, 2 * width / 3); // actual ruin is smaller
 	x += Random(width - wdt); // random shift to the right
 
 	var ruins = {Algo = MAPALGO_Rect, X = x, Y = y, Wdt = wdt, Hgt = height};
