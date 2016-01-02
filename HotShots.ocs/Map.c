@@ -20,21 +20,28 @@ protected func InitializeMap(proplist map)
 
 
 	var ruin_amount = 5;
-	var ruin_x_start = 30 * map_width / 100;
-	var ruin_x_end = 70 * map_width / 100;
+	var ruin_x_start = 22 * map_width / 100;
+	var ruin_x_end = 78 * map_width / 100;
 	var ruin_width = (ruin_x_end - ruin_x_start) / ruin_amount;
 	var ruin_min_width = ruin_width / 3;
 	var ruin_y = 2 * map_height / 10;
 	var ruin_min_height = (water_level - ruin_y) / 2;
+
+
+	ruin_x_start += Random(ruin_min_width);
+	var ruin_remaining_width = ruin_width * ruin_amount;
+
 	for (var i = 0; i < ruin_amount; i++)
 	{
 		var width = RandomX(ruin_min_width, ruin_width);
-		width = BoundBy(width, 0, ruin_x_end - ruin_x_start);
+		    width = Min(width, ruin_remaining_width);
+
 		var y = RandomX(ruin_y, ruin_y + ruin_min_height);
+
 		DrawRuins(ruin_x_start, y, width, water_level - y);
 
-		//var offset = Random(ruin_width - width);
 		ruin_x_start += ruin_width; //width + offset;
+		ruin_remaining_width -= width;
 	}
 
 
