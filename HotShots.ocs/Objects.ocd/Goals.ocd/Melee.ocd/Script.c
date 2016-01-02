@@ -9,6 +9,7 @@
 
 #include Goal_Melee
 
+local max_rounds = 1;
 local crew_count = 2;
 
 local player_protected_crew = [];
@@ -78,15 +79,8 @@ protected func AllGoalsFulfilled()
 {
 	// We're done. Play some sound
 	Sound("Fanfare", true);
-	
-	if (false) // TODO: last round? schedule game over call
-	{
-		AddEffect("IntGoalDone", nil, 1, 30, nil, Library_Goal);
-	}
-	else // otherwise simply start a new round.
-	{
-		RoundManager()->RemoveRoundEndBlocker(this);
-	}
+
+	AddEffect("IntGoalDone", nil, 1, 30, nil, Library_Goal);
 }
 
 
@@ -115,6 +109,13 @@ func OnRoundEnd(int round)
 	GuiPlayerHealthDisplay()->Hide();
 	RemovePlayerCrews();
 	EnableSavedCrews();
+	
+	if (round >= max_rounds)
+	{
+		RoundManager()->RegisterRoundStartBlocker(this);
+		AllGoalsFulfilled();
+		return;
+	}	
 }
 
 func OnRoundReset(int round)
