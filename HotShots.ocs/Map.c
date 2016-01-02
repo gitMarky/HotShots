@@ -57,6 +57,26 @@ func DrawRuins(int map_width, int map_height, int water_level)
 
 func DrawRuin(int x, int y, int width, int height)
 {
+	// draw some fake background ruins
+	
+	var background_height = 2 * height / 3;
+	var x_points = [x, x, x + width, x + width];
+	var y_points = [y + background_height,
+	                y + Random(background_height),
+	                y + Random(background_height),
+	                y + background_height];
+	var background = {Algo = MAPALGO_Polygon, X = x_points, Y = y_points};
+	background = {Algo = MAPALGO_Turbulence, Op = background, Iterations = 3};
+	Draw("Sky", background);
+	
+	var material = "Tunnel";
+	if (Random(2)) material = "Tunnel-brickback";
+
+	DrawMaterial(material, background, 3, 40);
+	DrawMaterial(material, background, 5, 20);
+
+	// draw the actual ruins
+
 	var wdt = RandomX(width / 3, 8 * width / 10); // actual ruin is smaller
 	x += Random(width - wdt); // random shift to the right
 
