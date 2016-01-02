@@ -25,31 +25,8 @@ protected func Initialize()
 	// environment
 	SetSkyAdjust(RGB(255, 128, 0));
 	SetSkyParallax(1, 20, 20, 0, 0, nil, nil);
-	CreateObjectAbove(Column, 160, 304)->SetClrModulation(RGB(255, 100, 80));
-	CreateObjectAbove(Column, 448, 272)->SetClrModulation(RGB(255, 100, 80));
 	SetMatAdjust(RGB(255, 150, 128));
 	
-	// smooth brick edges
-	PlaceEdges();
-	PlaceGras();
-	
-	return;
-}
-
-
-private func PlaceEdges()
-{
-	var x=[69, 69, 76, 84, 484, 76, 565, 565, 532, 68, 68, 476, 468, 235, 665, 675, 685, 775, 685, 775, 532, 765, 695, 765, 765, 365, 525, 505];
-	var y=[357, 349, 364, 364, 260, 300, 305, 313, 313, 300, 308, 260, 268, 495, 375, 365, 355, 355, 275, 415, 305, 345, 345, 255, 285, 445, 445, 435];
-	var d=[3, 1, 3, 2, 0, 0, 1, 3, 2, 1, 3, 1, 1, 3, 1, 1, 1, 0, 3, 2, 0, 0, 1, 1, 3, 3, 2, 3];
-	for (var i = 0; i < GetLength(x); i++)
-	{
-		var edge=CreateObjectAbove(BrickEdge, x[i], y[i] + 4, NO_OWNER);
-		edge->Initialize();
-		edge->SetP(d[i]);
-		edge->SetPosition(x[i],y[i]);
-		edge->PermaEdge();
-	}
 	return;
 }
 
