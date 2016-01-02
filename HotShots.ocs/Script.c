@@ -23,29 +23,45 @@ protected func Initialize()
 	CreateObject(Rule_Gravestones);
 	
 	// environment
-	SetSkyAdjust(RGB(255, 128, 0));
 	SetSkyParallax(1, 20, 20, 0, 0, nil, nil);
-	SetMatAdjust(RGB(255, 150, 128));
+	//SetSkyAdjust(RGB(255, 128, 0));
+	//SetMatAdjust(RGB(255, 150, 128));
 	
+	PlaceGrass();
+	PlaceMushrooms();
 	return;
 }
 
-private func PlaceGras()
+private func PlaceGrass()
 {
-	var x=[502,468,530,525,548,560,555,551,461,483,354,425,348,343,338,420,412,405,300,315,310,305,290,193,198,169,181,176,127,137,142,133,122,147,35,45,41,30,122];
-	var y=[225,221,201,206,191,178,181,185,228,220,190,234,190,188,188,231,226,221,229,218,221,228,229,262,260,261,261,259,227,227,230,228,237,240,221,221,219,222,224];
-	var r=[45,-45,-45,-45,-45,-45,-45,-45,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-45,45,45,0,-45,0,-45,45,0,-45,90];
-	for (var i = 0; i < GetLength(x); i++)
+	for (var x = 0; x < LandscapeWidth(); x += 10)
 	{
-		while(GBackSolid(x[i],y[i])) y[i]--;
-		var edge=CreateObjectAbove(Grass, x[i], y[i] + 5, NO_OWNER);
-		edge->SetCategory(C4D_StaticBack);
-		edge->SetR(r[i]); 
-		edge->Initialize();
-		edge->SetClrModulation(RGB(225+Random(30), Random(30), Random(30)));
-		
+		var y = 0;
+		while(GetMaterial(x, y) != Material("Tunnel") && y < LandscapeHeight()) y += 3;
+
+		var grass=CreateObjectAbove(Grass, x, y, NO_OWNER);
+		grass->SetCategory(C4D_StaticBack);
+		//grass->SetR(r[i]); 
+		grass->Initialize();
+		//grass->SetClrModulation(RGB(225+Random(30), Random(30), Random(30)));		
 	}
 	return;
+}
+
+private func PlaceMushrooms()
+{
+	for (var x = 0; x < LandscapeWidth(); x += RandomX(40, 70))
+	{
+		var y = LandscapeHeight();
+		var suitable = false;
+		while(!suitable && y > 0)
+		{
+			y -= 3;
+			suitable = GBackSolid(x, y) && GetMaterial(x, y - 5) == Material("Tunnel");
+		}
+
+		if (suitable) CreateObject(Mushroom, x, y, NO_OWNER);
+	}
 }
 
 protected func OnPlayerRelaunch(int plr)
