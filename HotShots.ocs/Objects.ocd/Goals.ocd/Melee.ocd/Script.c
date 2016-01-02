@@ -9,8 +9,11 @@
 
 #include Goal_Melee
 
+static const GOAL_Elimination_CrewFactor_Default = 70000;
+static const GOAL_Elimination_CrewFactor_Max = 35000;
+
 local max_rounds = 1;
-local crew_count = 2;
+local crew_count = 1;
 
 local player_protected_crew = [];
 local player_health_max = [];
@@ -46,6 +49,8 @@ func MakeHostileToAll(int newplr, int team)
 
 protected func InitializePlayer(int newplr, int x, int y, object base, int team)
 {
+	if (FrameCounter() < 1) crew_count = DetermineCrewCount(GOAL_Elimination_CrewFactor_Default);
+
 	MakeHostileToAll(newplr, team);
 	SaveFirstCrew(newplr);
 	return inherited(newplr, x, y, base, team, ...);
@@ -359,4 +364,26 @@ private func IsStartingPositionTooClose(int x, int y)
 	}
 
 	return false;
+}
+
+func GetCrewCountCurrent()
+{
+	return crew_count;
+}
+
+func GetCrewCountMax()
+{
+	return DetermineCrewCount(GOAL_Elimination_CrewFactor_Max);
+}
+
+func SetCrewCount(int number)
+{
+	crew_count = BoundBy(number, 1, GetCrewCountMax());
+}
+
+func DetermineCrewCount(int factor)
+{
+	var area = LandscapeWidth() * LandscapeHeight();
+	area /= GetPlayerCount();
+	return area / factor;
 }

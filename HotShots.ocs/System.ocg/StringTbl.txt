@@ -1,0 +1,5 @@
+TxtConfigureCrew=Configure crew
+TxtNumberCrew=Crew per player: %d/%d
+MoreCrew=One more crew
+LessCrew=One less crew
+Finished=Finished
