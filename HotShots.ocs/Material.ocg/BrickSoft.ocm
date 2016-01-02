@@ -1,0 +1,9 @@
+[Material]
+Name=BrickSoft
+Shape=Smoother
+Density=90
+Friction=15
+Placement=60
+BlastFree=1
+Blast2PXSRatio=25
+TextureOverlay=brick
