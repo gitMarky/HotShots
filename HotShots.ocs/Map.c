@@ -7,7 +7,7 @@ protected func InitializeMap(proplist map)
 	// Map size: all other settings depend on this value.
 	// The map size depends on the number of players.
 	var players = GetStartupPlayerCount();
-	var map_width = 100 + players * 50;
+	var map_width = 50 + players * 30;
 	var map_height = BoundBy(map_width / 3, 50, 150);
 
 	var water_level = 7 * map_height / 10;
