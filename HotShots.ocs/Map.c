@@ -18,22 +18,9 @@ protected func InitializeMap(proplist map)
 	var water = {Algo = MAPALGO_Rect, X = 0, Y = water_level, Wdt = map_width, Hgt = map_height - water_level};
 	Draw("Water", water);
 
-
-	var ruin_amount = 5;
-	var ruin_x_start = 22 * map_width / 100;
-	var ruin_x_end = 78 * map_width / 100;
-	var ruin_width = (ruin_x_end - ruin_x_start) / (ruin_amount + 1);
-	var ruin_y = 2 * map_height / 10;
-	var ruin_min_height = (water_level - ruin_y) / 2;
-
-	for (; ruin_x_start < ruin_x_end; ruin_x_start += ruin_width)
-	{
-		var y = RandomX(ruin_y, ruin_y + ruin_min_height);
-		DrawRuins(ruin_x_start, y, ruin_width, water_level - y);
-	}
-
-
 	DrawIsland(map_width, map_height, water_level);
+	DrawRuins(map_width, map_height, water_level);
+
 	// Return true to tell the engine a map has been successfully created.
 	return true;
 }
@@ -52,7 +39,23 @@ func DrawIsland(int map_width, int map_height, int water_level)
 	DrawMaterial("Tunnel", island, 5, 20);
 }
 
-func DrawRuins(int x, int y, int width, int height)
+func DrawRuins(int map_width, int map_height, int water_level)
+{
+	var ruin_amount = 5;
+	var ruin_x_start = 22 * map_width / 100;
+	var ruin_x_end = 78 * map_width / 100;
+	var ruin_width = (ruin_x_end - ruin_x_start) / (ruin_amount + 1);
+	var ruin_y = 2 * map_height / 10;
+	var ruin_min_height = (water_level - ruin_y) / 2;
+
+	for (; ruin_x_start < ruin_x_end; ruin_x_start += ruin_width)
+	{
+		var y = RandomX(ruin_y, ruin_y + ruin_min_height);
+		DrawRuin(ruin_x_start, y, ruin_width, water_level - y);
+	}
+}
+
+func DrawRuin(int x, int y, int width, int height)
 {
 	var ruins = {Algo = MAPALGO_Rect, X = x, Y = y, Wdt = width, Hgt = height};
 	ruins = {Algo = MAPALGO_Turbulence, Op = ruins, Iterations = 4};
