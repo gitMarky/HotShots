@@ -18,6 +18,7 @@ protected func InitializeMap(proplist map)
 	var water = {Algo = MAPALGO_Rect, X = 0, Y = water_level, Wdt = map_width, Hgt = map_height - water_level};
 	Draw("Water", water);
 
+	// Draw world
 	DrawIsland(map_width, map_height, water_level);
 	DrawRuins(map_width, map_height, water_level);
 
@@ -32,11 +33,16 @@ func DrawIsland(int map_width, int map_height, int water_level)
 	var y_points = [map_height + 10,          water_level, 60 * map_height /100,          water_level, map_height + 10];
 	var island = {Algo = MAPALGO_Polygon, X = x_points, Y = y_points};
 	island = {Algo = MAPALGO_Turbulence, Seed = Random(65536), Op = island, Amplitude = [25, 15], Scale = 10, Iterations = 1};	
-	Draw("Earth", island);
-	DrawMaterial("Earth-earth_root", island);
-	DrawMaterial("Earth-earth_spongy", island);
-	DrawMaterial("Rock-rock", island, 3, 10);
-	DrawMaterial("Tunnel", island, 5, 20);
+	DrawGround(island); // no tunnel, because the beach should not have tunnel
+}
+
+func DrawGround(proplist surface, bool tunnel)
+{
+	Draw("Earth", surface);
+	DrawMaterial("Earth-earth_root", surface);
+	DrawMaterial("Earth-earth_spongy", surface);
+	DrawMaterial("Rock-rock", surface, 3, 10);
+	if (tunnel) DrawMaterial("Tunnel", surface, 5, 20);
 }
 
 func DrawRuins(int map_width, int map_height, int water_level)
@@ -48,11 +54,17 @@ func DrawRuins(int map_width, int map_height, int water_level)
 	var ruin_y = 2 * map_height / 10;
 	var ruin_min_height = (water_level - ruin_y) / 2;
 
+	// draw ground with tunnel below
+	var tunnel = {Algo = MAPALGO_Rect, X = ruin_x_start, Y = water_level, Wdt = ruin_x_end - ruin_x_start, Hgt = map_height - water_level};
+	DrawGround(tunnel, true);
+
+	// draw ruins
 	for (; ruin_x_start < ruin_x_end; ruin_x_start += ruin_width)
 	{
 		var y = RandomX(ruin_y, ruin_y + ruin_min_height);
 		DrawRuin(ruin_x_start, y, ruin_width, water_level - y);
 	}
+
 }
 
 func DrawRuin(int x, int y, int width, int height)
