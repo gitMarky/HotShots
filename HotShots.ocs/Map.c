@@ -63,8 +63,8 @@ func DrawRuin(int x, int y, int width, int height)
 	var ruins = {Algo = MAPALGO_Rect, X = x, Y = y, Wdt = wdt, Hgt = height};
 	ruins = {Algo = MAPALGO_Turbulence, Op = ruins, Iterations = 4};
 	Draw("Earth", ruins);
-	DrawMaterial("Rock-rock", ruins, 2, 10);
-	DrawMaterial("Brick", ruins, 3, 40);
+	DrawMaterial("Rock-rock", ruins, 2, 15);
+	DrawMaterial("BrickSoft", ruins, 3, 25);
 	DrawMaterial("Tunnel-brickback", ruins, 5, 20);
-	DrawMaterial("Tunnel", ruins);
+	DrawMaterial("Tunnel", ruins, 4, 30);
 }
