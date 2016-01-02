@@ -7,7 +7,7 @@ protected func InitializeMap(proplist map)
 	// Map size: all other settings depend on this value.
 	// The map size depends on the number of players.
 	var players = GetStartupPlayerCount();
-	var map_width = 100 + players * 40;
+	var map_width = 100 + players * 50;
 	var map_height = BoundBy(map_width / 3, 50, 150);
 
 	var water_level = 7 * map_height / 10;
@@ -18,25 +18,25 @@ protected func InitializeMap(proplist map)
 	var water = {Algo = MAPALGO_Rect, X = 0, Y = water_level, Wdt = map_width, Hgt = map_height - water_level};
 	Draw("Water", water);
 
-/*
+
 	var ruin_amount = 5;
 	var ruin_x_start = 30 * map_width / 100;
 	var ruin_x_end = 70 * map_width / 100;
-	var ruin_width = 40 * map_width / (100 * ruin_amount);
+	var ruin_width = (ruin_x_end - ruin_x_start) / ruin_amount;
 	var ruin_min_width = ruin_width / 3;
 	var ruin_y = 2 * map_height / 10;
 	var ruin_min_height = (water_level - ruin_y) / 2;
 	for (var i = 0; i < ruin_amount; i++)
 	{
 		var width = RandomX(ruin_min_width, ruin_width);
-		width = BoundBy(width, 0, ruin_x_end - width - ruin_x_start);
+		width = BoundBy(width, 0, ruin_x_end - ruin_x_start);
 		var y = RandomX(ruin_y, ruin_y + ruin_min_height);
 		DrawRuins(ruin_x_start, y, width, water_level - y);
-		
-		var offset = Random(ruin_width - width);
-		ruin_x_start += width + offset;
+
+		//var offset = Random(ruin_width - width);
+		ruin_x_start += ruin_width; //width + offset;
 	}
-*/
+
 
 	DrawIsland(map_width, map_height, water_level);
 	// Return true to tell the engine a map has been successfully created.
