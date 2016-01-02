@@ -21,22 +21,11 @@ local animation_set;
 func Initialize()
 {
 	animation_set = {
-		AimMode        = AIM_Position, // The aiming animation is done by adjusting the animation position to fit the angle
-		AnimationAim   = "BowAimArms",
-		AnimationLoad  = "BowLoadArms",
 		LoadTime       = 20,
-		AnimationShoot = nil,
 		ShootTime      = 20,
 		TurnType       = 1,
 		WalkSpeed      = 84,
 		WalkBack       = 56,
-		AnimationReplacements = [
-			["Walk", "BowWalk"],
-			["Walk_Position", 20],
-			["Stand", "BowStand"],
-			["Jump", "BowJump"],
-			["KneelDown", "BowKneel"]
-		],
 	};
 }
 
@@ -53,8 +42,6 @@ public func ControlUseStart(object clonk, int x, int y)
 	// Start aiming
 	fAiming = 1;
 
-	//PlayAnimation("Draw", 6, Anim_Linear(0, 0, GetAnimationLength("Draw"), animation_set["LoadTime"], ANIM_Hold), Anim_Const(1000));
-
 	clonk->StartLoad(this);
 
 	ControlUseHolding(clonk, x, y);
@@ -67,10 +54,10 @@ public func FinishedLoading(object clonk)
 {
 	clonk->~StartAim(this);
 
-	// charge 20% default
+	// charge 40% default
 	AddChargeGui();
 	ChargeGuiSetMaxCharge(200);
-	ChargeGuiDoCharge(40);
+	ChargeGuiDoCharge(80);
 	return true;
 }
 
@@ -92,7 +79,7 @@ public func ControlUseHolding(object clonk, int x, int y)
 	{
 		ChargeGuiDoCharge(1);
 		// TODO: add graphics interface
-		clonk->Message("Charge %d%", ChargeGuiGetChargePercent());
+		clonk->Message("Strength %d%", ChargeGuiGetChargePercent());
 	}
 
 	return true;
@@ -101,6 +88,8 @@ public func ControlUseHolding(object clonk, int x, int y)
 // Stopping says the clonk to stop with aiming (he will go on untill he has finished loading and aiming at the given angle)
 public func ControlUseStop(object clonk, int x, int y)
 {
+	this.aim_x = x;
+	this.aim_y = y;
 	clonk->StopAim();
 	return true;
 }
@@ -133,23 +122,8 @@ public func ControlUseCancel(object clonk, int x, int y)
 
 public func Launch(object shooter, int angle, int str)
 {
-	// shoot
-	Exit();
-
-	var arm_radius = 5;
-	SetPosition(GetX() + Sin(angle, arm_radius), GetY() - 2 - Cos(angle, arm_radius));
-
-	var velocity = 65 * str / 100;
-
-	var xdir = Sin(angle, +velocity);
-	var ydir = Cos(angle, -velocity);
-	SetXDir(xdir);
-	SetYDir(ydir);
-	SetR(angle);
-	SetRDir(BoundBy(xdir, -1, 1) * str / 10);
-
-	// Shooter controls the projectile for correct kill tracing.
-	SetController(shooter->GetController());
+	var throw_speed = 650 * str / 100;
+	ForceThrow(shooter, this, angle, throw_speed, animation_set.ShootTime);
 
 	AddEffect("HitCheck", this, 1, 1, nil, nil, shooter);
 	return;
