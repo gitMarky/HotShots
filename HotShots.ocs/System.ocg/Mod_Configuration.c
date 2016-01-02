@@ -6,3 +6,9 @@ public func ReleaseCrew(object crew, bool instant)
 	
 	_inherited(crew, instant, ...);
 }
+
+// remove item configuration
+public func CanConfigureSpawnPoints()
+{
+	return false;
+}
