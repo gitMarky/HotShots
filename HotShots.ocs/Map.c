@@ -57,7 +57,10 @@ func DrawRuins(int map_width, int map_height, int water_level)
 
 func DrawRuin(int x, int y, int width, int height)
 {
-	var ruins = {Algo = MAPALGO_Rect, X = x, Y = y, Wdt = width, Hgt = height};
+	var wdt = RandomX(width / 3, 8 * width / 10); // actual ruin is smaller
+	x += Random(width - wdt); // random shift to the right
+
+	var ruins = {Algo = MAPALGO_Rect, X = x, Y = y, Wdt = wdt, Hgt = height};
 	ruins = {Algo = MAPALGO_Turbulence, Op = ruins, Iterations = 4};
 	Draw("Earth", ruins);
 	DrawMaterial("Rock-rock", ruins, 2, 10);
