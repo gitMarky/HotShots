@@ -86,7 +86,12 @@ func DisableInventory()
 		for (var item in FindObjects(Find_Container(crew)))
 		{
 			// TODO: possibly add the item to team resources again
-			if (item) item->RemoveObject();
+			var should_remove = !item->~RemoveOnActionPhaseEnd();
+			
+			if (should_remove && item)
+			{
+				item->RemoveObject();
+			}
 		}
 	}
 }

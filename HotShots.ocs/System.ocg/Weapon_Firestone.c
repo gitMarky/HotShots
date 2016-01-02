@@ -88,8 +88,6 @@ public func ControlUseHolding(object clonk, int x, int y)
 // Stopping says the clonk to stop with aiming (he will go on untill he has finished loading and aiming at the given angle)
 public func ControlUseStop(object clonk, int x, int y)
 {
-	this.aim_x = x;
-	this.aim_y = y;
 	clonk->StopAim();
 	return true;
 }
@@ -115,6 +113,16 @@ public func ControlUseCancel(object clonk, int x, int y)
 {
 	clonk->CancelAiming(this);
 	return true;
+}
+
+public func RemoveOnActionPhaseEnd()
+{
+	if (fAiming && Contained())
+	{
+		Contained()->CancelAiming(this);
+	}
+	
+	return false;
 }
 
 /* ++++++++ Launch and damage functions ++++++++ */
