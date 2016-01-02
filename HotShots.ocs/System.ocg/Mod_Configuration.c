@@ -13,6 +13,12 @@ public func CanConfigureSpawnPoints()
 	return false;
 }
 
+// remove bots configuration
+public func CanConfigureBots()
+{
+	return false;
+}
+
 // custom menu entries
 public func MainMenuAddItemCustom(object player)
 {
