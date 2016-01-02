@@ -1,6 +1,7 @@
 [Head]
 Title=HotShots
 Version=6,0
+MinPlayer=2
 
 [Definitions]
 Definition1=Objects.ocd
