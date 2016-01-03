@@ -610,3 +610,86 @@ func FxIntRefreshContentsMenuTimer(target, effect, time)
 	return 1;
 }
 */
+
+private func OnContentsSelection(symbol, extra_data)
+{
+	var target = current_menus[extra_data.slot].target;
+	if (!target) return;
+	// no target to swap to?
+	if (!current_menus[1 - extra_data.slot]) return;
+	var other_target = current_menus[1 - extra_data.slot].target;
+	if (!other_target) return;
+	
+	// Only if the object wants to be interacted with (hostility etc.)
+	if (other_target->~RejectInteractionMenu(cursor)) return;
+	
+	// Allow transfer only into containers.
+	if (!other_target->~IsContainer())
+	{
+		// Todo: other sound for "nope".
+		Sound("LightMetalHit*", nil, 10, GetController(), nil, nil, -50);
+		return;
+	}
+	
+	var transfer_only_one = GetPlayerControlState(GetOwner(), CON_ModifierMenu1) == 0; // Transfer ONE object of the stack?
+	var to_transfer = nil;
+	
+	if (transfer_only_one)
+	{
+		for (var possible in extra_data.objects)
+		{
+			if (possible == nil) continue;
+			to_transfer = [possible];
+			break;
+		}
+	}
+	else
+	{
+		to_transfer = extra_data.objects;
+	}
+	
+	var successful_transfers = 0;
+	
+	// Try to transfer all the previously selected items.
+	for (var obj in to_transfer)
+	{
+		if (!obj) continue;
+		
+		var handled = false;
+		// Does the object not want to leave the other container anyway?
+		if (!obj->Contained() || !obj->~QueryRejectDeparture(target))
+		{
+			// If stackable, always try to grab a full stack.
+			// Imagine armory with 200 arrows, but not 10 stacks with 20 each but 200 stacks with 1 each.
+			if (obj->~IsStackable())
+			{
+				var others = FindObjects(Find_Container(target), Find_ID(symbol), Find_Exclude(obj));
+				for (var other in others) 
+				{
+					if (obj->IsFullStack()) break;
+					other->TryAddToStack(obj);
+				}
+			}
+			
+			// More special handling for Stackable items..
+			handled = obj->~TryPutInto(other_target);
+			// Try to normally collect the object otherwise.
+			if (!handled)
+				handled = other_target->Collect(obj, true);
+		}
+		if (handled)
+			successful_transfers += 1;
+	}
+	
+	// Did we at least transfer one item?
+	if (successful_transfers > 0)
+	{
+		Sound("SoftTouch*", true, nil, GetOwner());
+		return true;
+	}
+	else
+	{
+		Sound("BalloonPop", true, nil, GetOwner());
+		return false;
+	}
+}
