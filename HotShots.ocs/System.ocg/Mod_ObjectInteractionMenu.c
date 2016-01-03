@@ -47,9 +47,9 @@ func OpenMenuForObject(object obj, int slot, bool forced)
 	// To close the part_menu automatically when the main menu is closed. The sidebar will use this target, too.
 	current_menus[slot].menu_object = main.Target;
 
-//	// Now, the sidebar.
+	// Now, the sidebar.
 //	var sidebar = CreateSideBar(slot);
-//	
+	
 //	var sidebar_size_em = ToEmString(InteractionMenu_SideBarSize);
 	var part_menu =
 	{
@@ -86,11 +86,11 @@ func OpenMenuForObject(object obj, int slot, bool forced)
 		
 		var root_menu =
 		{
-//			_one_part = part_menu,
+			_one_part = part_menu,
 			Target = this,
 			Decoration = GUI_MenuDeco,
 			BackgroundColor = RGB(0, 0, 0),
-////			minimize_button = 
+//			minimize_button = 
 //			{
 //				Bottom = "100%",
 //				Top = "100% - 2em",
@@ -236,6 +236,7 @@ func OpenMenuForObject(object obj, int slot, bool forced)
 */
 func CreateMainMenu(object obj, int slot)
 {
+	Log("Create main menu for %v %d", obj, slot);
 	var big_menu =
 	{
 		Target = CreateDummy(),
@@ -512,6 +513,7 @@ func FxIntRefreshContentsMenuTimer(target, effect, time)
 		// Add new!
 		if (!found)
 		{
+			Log("Object not found, adding to menu: %v", obj);
 			PushBack(extra_data.objects, obj);
 			
 			// Do we need a custom entry when the object has contents?
