@@ -5,11 +5,12 @@
 
 #appendto GUI_ObjectInteractionMenu
 
+
 /*
 	This is the entry point.
 	Create a menu for an object (usually from current_objects) and also create everything around it if it's the first time a menu is opened.
 */
-func OpenMenuForObject(object obj, int slot, bool forced)
+/*func OpenMenuForObject(object obj, int slot, bool forced)
 {
 	Log("Open menu for object %v, %d, %v", obj, slot, forced);
 	forced = forced ?? false;
@@ -228,13 +229,13 @@ func OpenMenuForObject(object obj, int slot, bool forced)
 	
 	// And notify the object of the fresh menu.
 	DoInteractionMenuOpenedCallback(obj);
-}
+}*/
 
 /*
 	Generates and creates one side of the menu.
 	Returns the proplist that will be put into the main menu on the left or right side.
 */
-func CreateMainMenu(object obj, int slot)
+/*func CreateMainMenu(object obj, int slot)
 {
 	Log("Create main menu for %v %d", obj, slot);
 	var big_menu =
@@ -364,7 +365,7 @@ func CreateMainMenu(object obj, int slot)
 	
 	return big_menu;
 }
-
+*/
 
 // updates the objects shown in the side bar
 // if an object which is in the menu on the left or on the right is not in the side bar anymore, another object is selected
@@ -420,16 +421,6 @@ func UpdateObjects(array new_objects)
 
 func FxIntCheckObjectsTimer(target, effect fx)
 {
-//	var new_objects = FindObjects(Find_AtRect(target->GetX() - 5, target->GetY() - 10, 10, 20), Find_NoContainer(), Find_Layer(target->GetObjectLayer()),
-//		// Find all containers and objects with a custom menu.
-//		Find_Or(Find_Func("IsContainer"), Find_Func("HasInteractionMenu")),
-//		// Do not show objects with an extra slot though - even if they are containers. They count as items here.
-//		Find_Not(Find_And(Find_Category(C4D_Object), Find_Func("HasExtraSlots"))),
-//		// Show only objects that the player can see.
-//		Find_Func("CheckVisibility", GetOwner()),
-//		// Normally sorted by z-order. But some objects may have a lower priority.
-//		Sort_Reverse(Sort_Func("GetInteractionPriority", target))
-//		);
 	var new_objects = [target, Goal()->GetPlayerMaterial(target->GetOwner())];
 	var equal = GetLength(new_objects) == GetLength(current_objects);
 	
@@ -446,6 +437,7 @@ func FxIntCheckObjectsTimer(target, effect fx)
 		UpdateObjects(new_objects);
 }
 
+/*
 func FxIntRefreshContentsMenuTimer(target, effect, time)
 {
 	if (!effect.obj) return -1;
@@ -617,4 +609,4 @@ func FxIntRefreshContentsMenuTimer(target, effect, time)
 	DoMenuRefresh(effect.slot, effect.menu_index, inventory);
 	return 1;
 }
-
+*/

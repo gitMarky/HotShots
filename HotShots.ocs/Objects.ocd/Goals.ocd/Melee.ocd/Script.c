@@ -393,8 +393,9 @@ func DetermineCrewCount(int factor)
 func InitMaterial(int player)
 {
 	player_material[player] = CreateObject(Dummy);
-	player_material[player].IsContainer = GetID().OverrideIsContainer;
-	player_material[player]->CreateContents(Firestone);
+	player_material[player].IsContainer = GetID().ReturnTrue;
+	//player_material[player].RejectInteractionMenu = GetID().ReturnTrue;
+	player_material[player]->CreateContents(Firestone)->SetInfiniteStackCount();
 }
 
 func GetPlayerMaterial(int player)
@@ -402,4 +403,5 @@ func GetPlayerMaterial(int player)
 	return player_material[player];
 }
 
-func OverrideIsContainer(){ return true;}
+// dummy function for overriding certain stuff
+func ReturnTrue(){ return true;}
