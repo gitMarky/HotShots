@@ -73,7 +73,7 @@ func FinishActions()
 func EnableInventory()
 {
 	var crew = TurnManager()->GetActiveCrew();
-	if (crew) crew->CreateContents(Firestone);
+	//if (crew) crew->CreateContents(Firestone);
 }
 
 
@@ -100,7 +100,20 @@ func DisableInventory()
 func DisableCrew()
 {
 	var crew = TurnManager()->GetActiveCrew();
-	if (crew) crew->SetCrewEnabled(false);
+	if (crew)
+	{
+		crew->SetCrewEnabled(false);
+		crew->TryCancelMenu();
+	}
+}
+
+
+public func FxIntCountdownTimer(object target, proplist effect, int time)
+{
+	// pause countdown if an uncloseable menu is opened;
+	if (target->~GetMenu() && target->GetMenu()->Unclosable()) return FX_OK;
+
+	return _inherited(target, effect, time);
 }
 
 
