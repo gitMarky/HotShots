@@ -18,6 +18,7 @@ local crew_count = 1;
 local player_protected_crew = [];
 local player_health_max = [];
 local player_health_cur = [];
+local player_material = [];
 
 local saved_starting_positions = [];
 
@@ -53,6 +54,7 @@ protected func InitializePlayer(int newplr, int x, int y, object base, int team)
 
 	MakeHostileToAll(newplr, team);
 	SaveFirstCrew(newplr);
+	InitMaterial(newplr);
 	return inherited(newplr, x, y, base, team, ...);
 }
 
@@ -387,3 +389,17 @@ func DetermineCrewCount(int factor)
 	area /= GetPlayerCount();
 	return area / factor;
 }
+
+func InitMaterial(int player)
+{
+	player_material[player] = CreateObject(Dummy);
+	player_material[player].IsContainer = GetID().OverrideIsContainer;
+	player_material[player]->CreateContents(Firestone);
+}
+
+func GetPlayerMaterial(int player)
+{
+	return player_material[player];
+}
+
+func OverrideIsContainer(){ return true;}
