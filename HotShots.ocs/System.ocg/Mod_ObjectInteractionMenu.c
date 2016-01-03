@@ -693,3 +693,11 @@ private func OnContentsSelection(symbol, extra_data)
 		return false;
 	}
 }
+
+// May not transfer all!
+public func OnMoveAllToClicked(int menu_id)
+{
+	Sound("BalloonPop", true, nil, GetOwner());
+	return;
+}
+
