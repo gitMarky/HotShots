@@ -8,6 +8,7 @@
 #appendto GrappleBow
 #appendto PowderKeg
 #appendto Boompack
+#appendto Lantern
 
 func Initialize()
 {

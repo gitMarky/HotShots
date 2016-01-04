@@ -4,6 +4,7 @@
  */
 
 #appendto Firestone
+#appendto Lantern
 
 func ForceThrow(object shooter, object target, int angle, throw_speed, int throw_time)
 {

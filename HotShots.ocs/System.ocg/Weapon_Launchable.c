@@ -3,6 +3,7 @@
  */
 
 #appendto Firestone
+#appendto Lantern
 
 local fAiming;
 
