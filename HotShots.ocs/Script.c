@@ -358,8 +358,8 @@ func DigFreeLine(int x1, int y1, int x2, int y2)
 		dummy->SetClrModulation(RGB(255,0,0));
 
 
-//		DigFree(x1 + i * dx / distance,
-//		        y1 + i * dy / distance,
-//		        radius);
+		DigFree(x1 + i * dx / distance,
+		        y1 + i * dy / distance,
+		        radius);
 	}
 }
