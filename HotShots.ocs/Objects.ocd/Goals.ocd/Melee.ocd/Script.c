@@ -400,6 +400,7 @@ func InitMaterial(int player)
 	player_material[player]->CreateContents(Dynamite)->SetStackCount(20);
 	player_material[player]->CreateContents(Shovel)->SetInfiniteStackCount();
 	player_material[player]->CreateContents(GrappleBow)->SetStackCount(5);
+	player_material[player]->CreateContents(PowderKeg)->SetStackCount(5);
 }
 
 func GetPlayerMaterial(int player)

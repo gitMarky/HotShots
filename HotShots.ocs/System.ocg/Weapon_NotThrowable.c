@@ -6,6 +6,7 @@
 #appendto Dynamite
 #appendto Shovel
 #appendto GrappleBow
+#appendto PowderKeg
 
 public func ControlThrow(object clonk, int x, int y)
 {

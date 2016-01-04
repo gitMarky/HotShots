@@ -6,6 +6,7 @@
 #appendto Dynamite
 #appendto Shovel
 #appendto GrappleBow
+#appendto PowderKeg
 
 func Initialize()
 {
