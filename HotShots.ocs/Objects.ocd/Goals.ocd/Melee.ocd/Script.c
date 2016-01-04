@@ -225,6 +225,7 @@ func CreatePlayerCrew(int player)
 		crew->MakeCrewMember(player);
 		crew->DoEnergy(100000);
 		crew->SetPosition(pos[0], pos[1]);
+		crew.CorrosionResist = true; // do not lose energy in acid
 
 		// this is the first available crew, since the other one is a saved crew
 		if (i == 1) FocusCrew(player, crew);

@@ -98,3 +98,27 @@ protected func FxIntDamageMessageHit(int dx, int dy)
 	if (dy > 1) SetYDir(dy / -2, 100);
 	SetXDir(dx / 2, 100);
 }
+
+/**
+ Removes the need for holding breath.
+ */
+protected func OnMaterialChanged(int new, int old)
+{
+	if(!GetAlive()) return;
+	var newdens = GetMaterialVal("Density", "Material", new);
+	var olddens = GetMaterialVal("Density", "Material", old);
+	var newliquid = (newdens >= C4M_Liquid) && (newdens < C4M_Solid);
+	var oldliquid = (olddens >= C4M_Liquid) && (olddens < C4M_Solid);
+
+	// into water
+	if(newliquid && !oldliquid)
+	{
+		this.BreatheWater = true;
+	}
+	else if(!newliquid && oldliquid)
+	{
+		this.BreatheWater = false;
+	}
+
+	return _inherited();
+}
