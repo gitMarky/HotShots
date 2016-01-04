@@ -187,8 +187,8 @@ public func DigFreeCaves()
 		var sky_pixel = GetNearestPixel(pixel, sky_pixels);
 		var cave_pixel = GetNearestPixel(pixel, cave_pixels);
 		
-		var distance_cave = Distance(0, 0, cave_pixel.Y, cave_pixel.Y);
-		var distance_sky = Distance(0, 0, cave_pixel.Y, cave_pixel.Y);
+		var distance_cave = Distance(pixel.X, pixel.Y, cave_pixel.Y, cave_pixel.Y);
+		var distance_sky = Distance(pixel.X, pixel.Y, cave_pixel.Y, cave_pixel.Y);
 		
 		var dig_pixel = sky_pixel;
 		if (distance_cave < distance_sky && !cave_pixel.cave)
@@ -242,17 +242,16 @@ func MaximizeReachablePixels(array pixels)
 		// not reachable pixels are automatically forwarded
 		if (!pixel.reachable)
 		{
-			var reachable = false;
 			// update the status for the next iteration
 			for (var neighbour in neighbours)
 			{
 				if (neighbour.reachable)
 				{
-					reachable = true;
+					pixel.reachable = true;
 				}
 			}
 
-			PushBack(filtered, pixel); //{X = pixel.X, Y = pixel.Y, reachable = reachable});
+			PushBack(filtered, pixel);
 		}
 		else
 		{
@@ -268,22 +267,22 @@ func MinimizeCavePixels(array pixels)
 	var filtered = [];
 	for (var pixel in pixels)
 	{
-		pixel.is_neighbour = 0;
+		pixel.picked = nil;
 	}
 	for (var pixel in pixels)
 	{
 		var neighbours = GetNeighbourPixels(pixel, pixels);
 
-		if (!pixel.is_neighbour) pixel.is_neighbour = 1; 
+		var pick = true;
 
 		for (var neighbour in neighbours)
 		{
-			if (!neighbour.is_neighbour) neighbour.is_neighbour = 2;
+			if (neighbour.picked) pick = false;
 		}
 
-
-		if (pixel.is_neighbour == 1)
+		if (pick)
 		{
+			pixel.picked = true;
 			PushBack(filtered, pixel);
 		}
 	}
@@ -326,8 +325,8 @@ func DigFreeLine(int x1, int y1, int x2, int y2)
 		dummy->SetClrModulation(RGB(255,0,0));
 
 
-		DigFree(x1 + i * dx / distance,
-		        y1 + i * dy / distance,
-		        radius);
+//		DigFree(x1 + i * dx / distance,
+//		        y1 + i * dy / distance,
+//		        radius);
 	}
 }
