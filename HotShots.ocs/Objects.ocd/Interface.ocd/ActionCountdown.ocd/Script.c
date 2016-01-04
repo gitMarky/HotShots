@@ -25,6 +25,7 @@ public func OnCountdownStarted()
 	actions_finished = false;
 	TurnManager()->RegisterTurnEndBlocker(this);
 	EnableCursorOnly();
+	ZoomCursorOnly();
 	EnableInventory();
 }
 
@@ -45,6 +46,18 @@ func EnableCursorOnly()
 	}
 }
 
+
+func ZoomCursorOnly()
+{
+	var player = TurnManager()->GetActivePlayer();
+	
+	var range = 200; // comfortable range outside the fog of war
+
+	SetPlayerZoomByViewRange(player, range, range, PLRZOOM_Set);
+	SetPlayerZoomByViewRange(player, range, range, PLRZOOM_LimitMin);
+	SetPlayerZoomByViewRange(player, range, range, PLRZOOM_LimitMax);
+
+}
 
 /**
  Callback that happens when the countdown ends.
