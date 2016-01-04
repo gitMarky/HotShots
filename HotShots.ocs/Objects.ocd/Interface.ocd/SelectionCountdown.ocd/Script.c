@@ -32,13 +32,24 @@ func EnableCrew()
 	var player = TurnManager()->GetActivePlayer();
 	var protected_crew = Goal()->GetProtectedCrew(player);
 	if (protected_crew) protected_crew->SetCrewEnabled(false);
+	
+	var cursor = false;
 
 	for (var i = 0; i < GetCrewCount(player); i++)
 	{
 		var crew = GetCrew(player, i);
 		
 		// enable non-protected crew
-		if (crew != protected_crew) crew->SetCrewEnabled(true);
+		if (crew != protected_crew)
+		{
+			crew->SetCrewEnabled(true);
+			
+			if (!cursor)
+			{
+				cursor = true;
+				SetCursor(player, crew);
+			}
+		}
 	}
 }
 

@@ -45,6 +45,8 @@ public func ControlUseStart(object clonk, int x, int y)
 	clonk->StartLoad(this);
 
 	ControlUseHolding(clonk, x, y);
+	
+	TurnManager()->ShowEvent(clonk);
 
 	return true;
 }
@@ -130,6 +132,8 @@ public func RemoveOnActionPhaseEnd()
 
 public func Launch(object shooter, int angle, int str)
 {
+	TurnManager()->ShowEvent(this);
+
 	var throw_speed = 650 * str / 100;
 	ForceThrow(shooter, this, angle, throw_speed, animation_set.ShootTime);
 

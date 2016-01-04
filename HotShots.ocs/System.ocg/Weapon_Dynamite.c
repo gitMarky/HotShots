@@ -8,10 +8,15 @@ public func Fuse()
 {
 	// notify round management
 	TurnFinishCountdown()->BlockTurnEnd();
-
 	_inherited();
 }
 
+public func Fusing()
+{
+	TurnManager()->ShowEvent(this);
+	_inherited();
+}	
+	
 public func DoExplode()
 {
 	// notify round management

@@ -100,4 +100,15 @@ func OnRoundStart(int round_number)
 {
 	RemoveTurnStartBlocker(RoundManager());
 }
- 
+
+func ShowEvent(object view_target)
+{
+	// Force view of all players on target.
+	if (!view_target) FatalError("Trying to focus on object 'nil'");
+
+	for (var i = 0; i < GetPlayerCount(C4PT_User); ++i)
+	{
+		var player = GetPlayerByIndex(i, C4PT_User);
+		SetPlrView(player, view_target);
+	}
+}
