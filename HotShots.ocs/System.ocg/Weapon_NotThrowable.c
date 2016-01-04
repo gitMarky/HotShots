@@ -4,6 +4,7 @@
 
 #appendto Firestone
 #appendto Dynamite
+#appendto Shovel
 
 public func ControlThrow(object clonk, int x, int y)
 {

@@ -4,7 +4,7 @@
 
 #appendto Firestone
 #appendto Dynamite
-
+#appendto Shovel
 
 func Initialize()
 {
