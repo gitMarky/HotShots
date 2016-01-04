@@ -4,7 +4,7 @@
 	@author Marky
 */
 
-
+static const debug = false;
 
 protected func Initialize()
 {
@@ -158,19 +158,21 @@ public func DigFreeCaves()
 	
 	var sky_pixels = GetPixels(map_pixels, "reachable", true);
 	
-	for (var pixel in sky_pixels)
+	if (debug)
 	{
-		var dummy = CreateObject(Rock, pixel.X * raster_size, pixel.Y * raster_size);
-		dummy->SetCategory(C4D_StaticBack);
+		for (var pixel in sky_pixels)
+		{
+			var dummy = CreateObject(Rock, pixel.X * raster_size, pixel.Y * raster_size);
+			dummy->SetCategory(C4D_StaticBack);
+		}
+	
+		for (var pixel in cave_pixels)
+		{
+			var dummy = CreateObject(Rock, pixel.X * raster_size, pixel.Y * raster_size);
+			dummy->SetCategory(C4D_StaticBack);
+			dummy->SetClrModulation(RGB(50, 50, 50));
+		}
 	}
-
-	for (var pixel in cave_pixels)
-	{
-		var dummy = CreateObject(Rock, pixel.X * raster_size, pixel.Y * raster_size);
-		dummy->SetCategory(C4D_StaticBack);
-		dummy->SetClrModulation(RGB(50, 50, 50));
-	}
-
 
 	// now only cave_pixels are left
 	for (var pixel in cave_pixels)
@@ -333,11 +335,12 @@ func DigFreeLine(int x1, int y1, int x2, int y2)
 	{
 		if (i % 8 == 0) radius = RandomX(10, 15);
 	
-		var dummy = CreateObject(Rock, x1 + i * dx / distance,
-		        y1 + i * dy / distance);
-		dummy->SetCategory(C4D_StaticBack);
-		dummy->SetClrModulation(RGB(255,0,0));
-
+		if (debug)
+		{
+			var dummy = CreateObject(Rock, x1 + i * dx / distance, y1 + i * dy / distance);
+			dummy->SetCategory(C4D_StaticBack);
+			dummy->SetClrModulation(RGB(255,0,0));
+		}
 
 		DigFree(x1 + i * dx / distance,
 		        y1 + i * dy / distance,
