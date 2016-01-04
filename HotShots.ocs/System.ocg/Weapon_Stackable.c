@@ -5,6 +5,7 @@
 #appendto Firestone
 #appendto Dynamite
 #appendto Shovel
+#appendto GrappleBow
 
 func Initialize()
 {
