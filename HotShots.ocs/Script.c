@@ -135,37 +135,28 @@ public func DigFreeCaves()
 	}
 
 	// minimize the array
-	Log("Minimizing sky pixels array");
 	var old_length = GetLength(map_pixels);
 	var new_length = 0;
 	var cave_pixels = GetPixels(map_pixels, "reachable", false);
 	while (new_length != old_length)
 	{
-		Log("... old %d vs new %d", old_length, new_length);
-		Log("    ... minimize sky pixels");
 		map_pixels = MaximizeReachablePixels(map_pixels);
-		Log("    ... minimize cave pixels");
 		cave_pixels = GetPixels(map_pixels, "reachable", false);
 		old_length = new_length;
 		new_length = GetLength(map_pixels);
 	}
 	
 	// minimize the array
-	Log("Minimizing cave pixels array");
 	old_length = GetLength(cave_pixels);
 	new_length = 0;
 	while (new_length != old_length)
 	{
-		Log("... old %d vs new %d", old_length, new_length);
 		cave_pixels = MinimizeCavePixels(cave_pixels, raster_size);
 		old_length = new_length;
 		new_length = GetLength(cave_pixels);
 	}
 	
 	var sky_pixels = GetPixels(map_pixels, "reachable", true);
-	
-	Log("Sky pixels: %v", sky_pixels);
-	Log("Cave pixels: %v", cave_pixels);
 	
 	for (var pixel in sky_pixels)
 	{
@@ -190,19 +181,11 @@ public func DigFreeCaves()
 		var distance_cave = Distance(pixel.X * raster_size, pixel.Y * raster_size, cave_pixel.X * raster_size, cave_pixel.Y * raster_size);
 		var distance_sky =  Distance(pixel.X * raster_size, pixel.Y * raster_size,  sky_pixel.X * raster_size,  sky_pixel.Y * raster_size);
 		
-		Log("... distance to cave %d (%v), distance to sky %d", distance_cave, cave_pixel.cave, distance_sky);
-		
 		var dig_pixel = sky_pixel;
 		if (distance_cave < distance_sky && !cave_pixel.cave)
 		{
 			pixel.cave = true;
 			dig_pixel = cave_pixel;
-			
-			Log("... Digging to cave pixel");
-		}
-		else
-		{
-			Log("... Digging to sky pixel");
 		}
 		
 		DigFreeLine(pixel.X * raster_size, pixel.Y * raster_size,
@@ -342,8 +325,6 @@ func GetNearestPixel(proplist pixel, array pixels)
 
 func DigFreeLine(int x1, int y1, int x2, int y2)
 {
-	Log("    ... Digging from %d %d to %d %d", x1, y1, x2, y2);
-
 	var distance = Distance(x1, y1, x2, y2);
 	var dx = x2-x1;
 	var dy = y2-y1;
