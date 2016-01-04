@@ -29,6 +29,7 @@ public func OnCountdownStarted()
  */
 func OnCountdownEnded()
 {
+	TurnEndHandler()->Start();
 	TurnManager()->RemoveTurnEndBlocker(this);
 }
 

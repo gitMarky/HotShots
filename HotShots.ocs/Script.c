@@ -14,6 +14,7 @@ protected func Initialize()
 	CreateObject(Turn_SelectionCountdown);
 	CreateObject(Turn_ActionCountdown);
 	CreateObject(Turn_FinishCountdown);
+	CreateObject(Turn_EndHandler);
 	CreateObject(Environment_TurnManager);
 	CreateObject(GUI_PlayerHealthDisplay);
 
