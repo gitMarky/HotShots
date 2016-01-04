@@ -9,6 +9,7 @@
 #appendto PowderKeg
 #appendto Boompack
 #appendto Lantern
+#appendto Sword
 
 func Initialize()
 {

@@ -403,6 +403,7 @@ func InitMaterial(int player)
 	player_material[player]->CreateContents(PowderKeg)->SetStackCount(5);
 	player_material[player]->CreateContents(Boompack)->SetStackCount(3);
 	player_material[player]->CreateContents(Lantern)->SetStackCount(5);
+	player_material[player]->CreateContents(Sword)->SetInfiniteStackCount();
 }
 
 func GetPlayerMaterial(int player)

@@ -7,8 +7,9 @@
 #appendto Shovel
 #appendto GrappleBow
 #appendto PowderKeg
-#appendto BoomPack
+#appendto Boompack
 #appendto Lantern
+#appendto Sword
 
 public func ControlThrow(object clonk, int x, int y)
 {
