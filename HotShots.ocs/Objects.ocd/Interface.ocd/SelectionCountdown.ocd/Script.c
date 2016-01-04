@@ -50,6 +50,7 @@ func EnableCrew()
 				cursor = true;
 				SetCursor(player, crew);
 				SetPlrView(player, crew);
+				TurnManager()->ShowEvent(crew);
 			}
 		}
 	}
