@@ -157,7 +157,7 @@ public func DigFreeCaves()
 	while (new_length != old_length)
 	{
 		Log("... old %d vs new %d", old_length, new_length);
-		cave_pixels = MinimizeCavePixels(cave_pixels);
+		cave_pixels = MinimizeCavePixels(cave_pixels, raster_size);
 		old_length = new_length;
 		new_length = GetLength(cave_pixels);
 	}
@@ -262,7 +262,7 @@ func MaximizeReachablePixels(array pixels)
 	return filtered;
 }
 
-func MinimizeCavePixels(array pixels)
+func MinimizeCavePixels(array pixels, int raster_size)
 {
 	var filtered = [];
 	for (var pixel in pixels)
@@ -283,10 +283,41 @@ func MinimizeCavePixels(array pixels)
 		if (pick)
 		{
 			pixel.picked = true;
-			PushBack(filtered, pixel);
+			//PushBack(filtered, pixel);
 		}
 	}
 	
+	for (var pixel in pixels)
+	{
+		if(!pixel.picked) continue;
+		
+		for (var other in pixels)
+		{
+			if (!other.picked) continue;
+			if (other.X == pixel.X && other.Y == pixel.Y) continue;
+			
+			if (PathFree(pixel.X * raster_size, pixel.Y * raster_size,
+			             other.X * raster_size, other.Y * raster_size))
+			{
+				if (pixel.Y > other.Y)
+				{
+					other.picked = false;
+				}
+				else
+				{
+					pixel.picked = false;
+				}
+			}
+		}
+	}
+	
+	for (var pixel in pixels)
+	{
+		if (pixel.picked)
+		{
+			PushBack(filtered, pixel);
+		}
+	}
 	return filtered;
 }
 
