@@ -110,8 +110,12 @@ func DisableCrew()
 
 public func FxIntCountdownTimer(object target, proplist effect, int time)
 {
-	// pause countdown if an uncloseable menu is opened;
-	if (target->~GetMenu() && target->GetMenu()->Unclosable()) return FX_OK;
+	if (target->~GetMenu())
+	{
+		if (target->GetMenu()->Unclosable() 	// pause countdown if an uncloseable menu is opened
+		 || target->GetMenu()->IsContentMenu()) // pause countdown if the conent menu is opened
+		 	return FX_OK;
+	}
 
 	return _inherited(target, effect, time);
 }
