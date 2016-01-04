@@ -13,7 +13,7 @@ protected func Collection2(object obj)
 	// means that we selected an item from the player inventory
 	if (GetMenu() && GetMenu()->~IsContentMenu())
 	{
-		TryCancelMenu();
+		ScheduleCall(this, this.TryCancelMenu, 1);
 	}
 	
 	return _inherited(obj);

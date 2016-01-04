@@ -12,7 +12,12 @@ func Initialize()
 	{
 		if (!this[property])
 		{
-			this[property] = Library_Stackable[property];
+				this[property] = Library_Stackable[property];
+		}
+
+		if (property == "TryPutInto")
+		{
+			this.TryPutIntoInherited = Library_Stackable[property];
 		}
 	}
 
@@ -47,7 +52,9 @@ public func TryPutInto(object into, bool only_add_to_existing_stacks)
 	else
 	{
 		// default handling?
-		var handled = _inherited(into, only_add_to_existing_stacks);
+		var handled = Call(this.TryPutIntoInherited, into, only_add_to_existing_stacks);
+
+		//Log("Handled adding to existing stack? %v", handled);
 		
 		// if not: add this object to the inventory
 		if (!handled)
@@ -67,6 +74,6 @@ public func RemoveOnActionPhaseEnd()
 	var player = TurnManager()->GetActivePlayer();
 	var inventory = Goal()->GetPlayerMaterial(player);
 	var handled = TryPutInto(inventory);
-	Log("Transferred %v to player inventory? %v", this, handled);
+	//Log("Transferred to player inventory? %v", handled);
 	return handled;
 }
