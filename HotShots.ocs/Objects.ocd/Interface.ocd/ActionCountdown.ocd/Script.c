@@ -105,6 +105,8 @@ func DisableCrew()
 	{
 		crew->SetCrewEnabled(false);
 		crew->TryCancelMenu();
+		crew->SetComDir(COMD_Stop);
+		crew->SetCommand("None");
 	}
 }
 
