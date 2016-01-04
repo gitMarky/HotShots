@@ -344,7 +344,8 @@ private func GuessStartingPosition()
 		 || GBackSemiSolid(AbsX(tx-5), AbsY(ty-10))
 		// different from other goals: must be on the ground
 		 || !GBackSolid(AbsX(tx), AbsY(ty+12))
-		 || IsStartingPositionTooClose(tx, ty))
+		 || IsStartingPositionTooClose(tx, ty)
+		 || ty > 8 * LandscapeHeight() / 10) // not too low
 			continue;
 
 		// Success.
