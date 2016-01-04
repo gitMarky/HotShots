@@ -7,6 +7,7 @@
 #appendto Shovel
 #appendto GrappleBow
 #appendto PowderKeg
+#appendto Boompack
 
 func Initialize()
 {
