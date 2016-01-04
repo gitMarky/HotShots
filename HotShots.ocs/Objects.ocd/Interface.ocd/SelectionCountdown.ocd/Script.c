@@ -48,6 +48,7 @@ func EnableCrew()
 			{
 				cursor = true;
 				SetCursor(player, crew);
+				SetPlrView(player, cursor);
 			}
 		}
 	}
