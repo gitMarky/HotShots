@@ -186,9 +186,11 @@ public func DigFreeCaves()
 	{
 		var sky_pixel = GetNearestPixel(pixel, sky_pixels);
 		var cave_pixel = GetNearestPixel(pixel, cave_pixels);
+
+		var distance_cave = Distance(pixel.X * raster_size, pixel.Y * raster_size, cave_pixel.X * raster_size, cave_pixel.Y * raster_size);
+		var distance_sky =  Distance(pixel.X * raster_size, pixel.Y * raster_size,  sky_pixel.X * raster_size,  sky_pixel.Y * raster_size);
 		
-		var distance_cave = Distance(pixel.X, pixel.Y, cave_pixel.Y, cave_pixel.Y);
-		var distance_sky = Distance(pixel.X, pixel.Y, cave_pixel.Y, cave_pixel.Y);
+		Log("... distance to cave %d (%v), distance to sky %d", distance_cave, cave_pixel.cave, distance_sky);
 		
 		var dig_pixel = sky_pixel;
 		if (distance_cave < distance_sky && !cave_pixel.cave)
@@ -283,7 +285,6 @@ func MinimizeCavePixels(array pixels, int raster_size)
 		if (pick)
 		{
 			pixel.picked = true;
-			//PushBack(filtered, pixel);
 		}
 	}
 	
@@ -328,6 +329,7 @@ func GetNearestPixel(proplist pixel, array pixels)
 	for (var other in pixels)
 	{
 		var distance = Distance(pixel.X * 10, pixel.Y * 10, other.X * 10, other.Y * 10);
+		if (distance == 0) continue;
 		if (!nearest || distance < min_distance)
 		{
 			nearest = other;
