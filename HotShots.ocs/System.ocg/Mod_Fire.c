@@ -110,7 +110,8 @@ global func FxFireTimer(object target, proplist effect, int time)
 	//target->ExecFire(effect_number, caused_by);
 	if (target->GetAlive())
 	{
-		target->DoEnergy(-effect.strength*4, true, FX_Call_EngFire, effect.caused_by); 
+		// change: no damage on living objects
+		// target->DoEnergy(-effect.strength*4, true, FX_Call_EngFire, effect.caused_by); 
 	}
 	else 
 	{
