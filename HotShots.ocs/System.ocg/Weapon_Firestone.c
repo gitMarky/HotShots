@@ -121,8 +121,8 @@ public func RemoveOnActionPhaseEnd()
 	{
 		Contained()->CancelAiming(this);
 	}
-	
-	return false;
+
+	return _inherited();
 }
 
 /* ++++++++ Launch and damage functions ++++++++ */

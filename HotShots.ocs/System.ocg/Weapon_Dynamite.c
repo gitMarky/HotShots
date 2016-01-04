@@ -7,16 +7,16 @@
 public func Fuse()
 {
 	// notify round management
-	//TurnActionCountdown()->FinishActions();
+	TurnFinishCountdown()->BlockTurnEnd();
 
 	_inherited();
 }
 
-public func OnFuseFinished()
+public func DoExplode()
 {
 	// notify round management
 	TurnActionCountdown()->FinishActions();
-	ScheduleCall(TurnFinishCountdown(), TurnFinishCountdown().StartCountdown, 1);
+	TurnFinishCountdown()->StartCountdown();
 
 	_inherited();
 }
@@ -28,7 +28,7 @@ public func RemoveOnActionPhaseEnd()
 	{
 		return true;
 	}
-	
-	return false;
+
+	return _inherited();
 }
 

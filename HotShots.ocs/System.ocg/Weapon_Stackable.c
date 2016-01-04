@@ -72,9 +72,12 @@ public func TryPutInto(object into, bool only_add_to_existing_stacks)
 
 public func RemoveOnActionPhaseEnd()
 {
+	var handled = _inherited();
+	if (handled) return true;
+
 	var player = TurnManager()->GetActivePlayer();
 	var inventory = Goal()->GetPlayerMaterial(player);
-	var handled = TryPutInto(inventory);
+	handled = TryPutInto(inventory);
 	//Log("Transferred to player inventory? %v", handled);
 	return handled;
 }
