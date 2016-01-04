@@ -256,17 +256,6 @@ func MaximizeReachablePixels(array pixels)
 		}
 		else
 		{
-//			var add = false;
-			// forward, if pixel has at least one non-reachable neighbour
-//			for (var neighbour in neighbours)
-//			{
-//				if (!neighbour.reachable)
-//				{
-//					add = true;
-//				}
-//			}
-			
-//			if (add) 
 			PushBack(filtered, pixel);
 		}
 	}
@@ -297,11 +286,6 @@ func MinimizeCavePixels(array pixels)
 		{
 			PushBack(filtered, pixel);
 		}
-
-		//if (GetLength(neighbours) >= 2 || GetLength(neighbours) == 0)
-		//{
-		//	PushBack(filtered, pixel);
-		//}
 	}
 	
 	return filtered;
@@ -327,8 +311,6 @@ func GetNearestPixel(proplist pixel, array pixels)
 func DigFreeLine(int x1, int y1, int x2, int y2)
 {
 	Log("    ... Digging from %d %d to %d %d", x1, y1, x2, y2);
-	//if (true) return;
-
 
 	var distance = Distance(x1, y1, x2, y2);
 	var dx = x2-x1;
