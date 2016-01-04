@@ -1,8 +1,10 @@
 #appendto Clonk
 
+local turn_contents; // collected contents this turn?
+
 public func RejectInteractionMenu(object to)
 {
-	if (Contents()) return true;
+	if (Contents() || turn_contents) return true;
 
 	return _inherited(to);
 }
@@ -15,6 +17,8 @@ protected func Collection2(object obj)
 	{
 		ScheduleCall(this, this.TryCancelMenu, 1);
 	}
+	
+	turn_contents = true;
 	
 	return _inherited(obj);
 }

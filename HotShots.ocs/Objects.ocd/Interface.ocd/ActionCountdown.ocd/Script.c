@@ -87,7 +87,7 @@ func FinishActions()
 func EnableInventory()
 {
 	var crew = TurnManager()->GetActiveCrew();
-	//if (crew) crew->CreateContents(Firestone);
+	crew.turn_contents = false;
 }
 
 
