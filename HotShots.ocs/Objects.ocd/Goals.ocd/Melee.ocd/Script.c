@@ -395,6 +395,7 @@ func InitMaterial(int player)
 	player_material[player] = CreateObject(Dummy);
 	player_material[player].IsContainer = GetID().ReturnTrue;
 	//player_material[player].RejectInteractionMenu = GetID().ReturnTrue;
+	player_material[player]->CreateContents(Dynamite)->SetStackCount(20);
 	player_material[player]->CreateContents(Firestone)->SetInfiniteStackCount();
 }
 

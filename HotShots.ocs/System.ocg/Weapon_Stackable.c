@@ -3,6 +3,7 @@
  */
 
 #appendto Firestone
+#appendto Dynamite
 
 
 func Initialize()
