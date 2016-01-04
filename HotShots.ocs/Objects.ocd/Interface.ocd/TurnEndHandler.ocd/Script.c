@@ -67,7 +67,15 @@ func HandleCrewOnFire(object crew, proplist effect)
 {
 	if (crew->OnFire())
 	{
+		crew.TurnEnd_OnFire++;
 		DamageCrew(crew, effect, TURN_Damage_OnFire);
+		
+		// crew burns for 5 turns total
+		if (crew.TurnEnd_OnFire >= 5)
+		{
+			crew.TurnEnd_OnFire = 0;
+			crew->Extinguish();
+		}
 	}
 }
 
